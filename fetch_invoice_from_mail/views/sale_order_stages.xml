@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <!--Etapas de las ventas-->
+
+        <record id="sale_stages_form" model="ir.ui.view">
+            <field name="name">sale.stages.form</field>
+            <field name="model">sale.stages</field>
+            <field name="arch" type="xml">
+                <form string="Stages">
+                <sheet string="Stage">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="attachment_tree_view" type="object" icon="fa-files-o" string="Ver ordenes"/>
+                    </div>
+                    <group>
+		            <group>
+                                <field name="name"/>
+                                <field name="sequence"/>
+		            </group>
+		            <group>
+                                <field name="fold"/>
+		            </group>
+                    </group>
+                    <notebook>
+                        <page name="settings" string="Descripción">
+                            <group>
+                                <field name="description" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="sale_stages_tree" model="ir.ui.view">
+            <field name="name">sale.stages.tree</field>
+            <field name="model">sale.stages</field>
+            <field name="arch" type="xml">
+                <tree string="Stages">
+                        <field name="sequence" widget="handle"/>
+                        <field name="name"/>
+                        <field name="fold"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="sale_stages_tree1_action" model="ir.actions.act_window">
+            <field name="name">Etapas de ventas</field>
+            <field name="res_model">sale.stages</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new one stage.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="sale_stages_tree1_action" id="menu_action_invoice_tree_refund1" parent="sales_team.menu_sale_config" sequence="2"/>
+
+
+
+        <record id="action_action_invoice_supplier_tree1_view1" model="ir.actions.act_window">
+            <field name="name">Ordenes a producir</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="context">{
+                'group_by': 'stage_id'
+            }</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to record a new sale order.
+              </p>
+            </field>
+        </record>
+
+
+        <record id="view_order_form_stage_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="before">
+                    <header>
+                        <field name="stage_id" widget="statusbar" clickable="True"
+                            options="{'fold_field': 'fold'}"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sale_order_kanban_stage_view">
+            <field name="name">sale.order.kanban.stages</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard">
+                    <field name="name"/>
+                    <field name="time_process"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_project_kanban_main">
+                                    <div class="o_kanban_card_content o_visible">
+                                        <div class="o_kanban_primary_left">
+                                            <div class="o_primary">
+                                                <span><t t-esc="record.name.value"/></span>
+                                                <strong class="text-center">Duración</strong>
+                                                <span><t t-esc="record.time_process.value"/></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+        <record id="sale_order_tree1_view1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="sale_order_kanban_stage_view"/>
+            <field name="act_window_id" ref="action_action_invoice_supplier_tree1_view1"/>
+        </record>
+
+        <record id="sale_order_tree1_view2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale.view_order_form"/>
+            <field name="act_window_id" ref="action_action_invoice_supplier_tree1_view1"/>
+        </record>
+
+        <menuitem action="action_action_invoice_supplier_tree1_view1" id="menu_action_sale_order_stage" parent="sales_team.menu_sales"
+            sequence="12" groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+
+	</data>
+</odoo>

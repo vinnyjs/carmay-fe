@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+		<record id="account_invoice_form_inherit" model="ir.ui.view">
+			<field name="name">account.invoice.tree</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form"/>
+			<field name="arch" type="xml">
+				<notebook position="inside">
+				      <page string="Datos Transporte">
+						<group>
+						     <field name="cod_presupuestario"/>
+						     <field name="mes_cobro"/>
+						     <field name="num_dias_servicio"/>
+						     <field name="num_estudiantes"/>
+						     <field name="tarifa_autorizada"/>
+						     <field name="monto_factura"/>
+						</group>
+				      </page>
+				</notebook>
+			</field>
+		</record>
+
+    </data>
+</odoo>

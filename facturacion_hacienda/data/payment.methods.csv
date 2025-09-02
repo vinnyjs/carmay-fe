@@ -1,0 +1,7 @@
+id,sequence,name,notes,active
+cr_electronic_invoice.PaymentMethods_1,01,Efectivo,,true
+cr_electronic_invoice.PaymentMethods_2,02,Tarjeta,,true
+cr_electronic_invoice.PaymentMethods_3,03,Cheque,,true
+cr_electronic_invoice.PaymentMethods_4,04,Transferencia – depósito bancario,,true
+cr_electronic_invoice.PaymentMethods_5,05,Recaudado por tercero,,true
+cr_electronic_invoice.PaymentMethods_99,99,Otros (se debe indicar el medio de pago),,true

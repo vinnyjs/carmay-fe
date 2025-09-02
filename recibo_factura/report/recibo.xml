@@ -1,0 +1,618 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="paperformat_invoicereceipt1" model="report.paperformat">
+            <field name="name">Recibo contabilidad</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">5000</field>
+            <field name="page_width">70</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">9</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">11</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">3</field>
+            <field name="dpi">130</field>
+        </record>
+
+        <record id="paperformat_invoicereceipt1_prueba" model="report.paperformat">
+            <field name="name">Recibo contabilidad prueba</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">5000</field>
+            <field name="page_width">70</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">9</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">11</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">3</field>
+            <field name="dpi">130</field>
+        </record>
+
+
+        <template id="report_invoice_receipt">
+            <t t-call="report.html_container">
+
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <style>
+                            h4 {
+                                margin-top: 3px;
+                                margin-bottom: 3px;
+                                font-size: 19px;
+                            }
+                            h3 {
+                                margin-top: 3px;
+                                margin-bottom: 3px;
+                            }
+                            span {
+                                font-size: 19px;
+                            }
+                            strong {
+                                font-size: 19px;
+                            }
+                            body {
+                                font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
+                            }
+                            .noborder &gt; tbody &gt; tr &gt; td {
+                                border: none!important;
+                                padding-top: 0px;
+                                padding-bottom: 0px;
+                            }
+                        </style>
+                        <t t-foreach="['Original']" t-as="copia">
+
+
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h2 t-esc="o.company_id.name"/>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px;">
+                            <div class="col-xs-12 text-center">
+                                <h4 t-esc="o.company_id.company_registry"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4>Céd. <span t-esc="o.company_id.ref"/></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4>Tels. <span t-esc="o.company_id.phone"/></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4 t-esc="o.company_id.email"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h3 t-esc="o.company_id.rml_header1"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h3 t-if="o.type!='out_refund'">
+                                    Factura de contado
+                                </h3>
+                                <h3 t-if="o.type=='out_refund'">
+                                    Nota de crédito
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Consecutivo:</span>
+                                <span t-esc="o.clave_envio_hacienda and o.clave_envio_hacienda[21:41] or ''"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Clave:</span>
+                                <span t-esc="o.clave_envio_hacienda or ''"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Fecha y hora:</span>
+                                <span t-field="o.validate_date" class="text-uppercase" t-field-options="{&quot;format&quot;: &quot;d/MM/y hh:m:s a&quot;}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Cliente:</span>
+                                <t t-if="o.nombre_facturar">
+                                    <span t-esc="o.nombre_facturar.upper()"/>
+                                </t>
+                                <t t-if="not o.nombre_facturar">
+                                    <span t-field="o.partner_id"/>
+                                </t>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Céd:</span>
+                                <span t-field="o.partner_id.ref"/>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="o.comment">
+                            <div class="col-xs-12">
+                                <span>Nota:</span>
+                                <span t-field="o.comment"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <span>
+                                    Detalle
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="o.refund_invoice_id and o.type=='out_refund'">
+                            <div class="col-xs-12">
+                                <strong>Nota de crédito aplicada por concepto de: </strong>
+                                <span class="text-uppercase" t-field="o.name"/>
+                                <br/>
+                                <strong>Aplicada a: </strong><span class="text-uppercase" t-field="o.refund_invoice_id"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>CODIGO.</th>
+                                    <th style="width:300px;" colspan="2">DESCR.</th>
+                                </tr>
+                                <tr>
+                                    <th>CANT.</th>
+                                    <th>P. VENTA</th>
+                                    <th class="text-right" style="width:200px;">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <strong t-esc="(line.product_id.id) and line.product_id.default_code"/>
+                                        </td>
+                                        <td style="width:300px;" colspan="2">
+                                            <span t-esc="(line.product_id.id) and line.product_id.name or line.name" style="font-size: 22px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">
+                                            <strong t-field="line.quantity"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_unit"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_subtotal"/>
+                                            <t t-if="line.invoice_line_tax_ids">
+                                                <strong>*</strong>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <table class="table noborder">
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Sub-total:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Descuento:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total_discount"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Impuestos:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_tax"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Total:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td class="text-right">
+                                    <strong>* = Gravado</strong>
+                                </td>
+                            </tr>
+                        </table>
+                        <h3 class="text-center">Forma de Pago</h3>
+                        <table class="table table-condensed">
+                            <tr>
+                                <td class="text-center">
+                                    Tipo
+                                </td>
+                                <td class="text-center">
+                                    Ref.
+                                </td>
+                                <td class="text-center">
+                                    Monto
+                                </td>
+                            </tr>
+                            <tr t-foreach="o.payment_move_line_ids" t-as="pay">
+                                <td>
+                                    <span t-field="pay.journal_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="pay.ref"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="pay.credit"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <span>Vendedor</span>
+                            </div>
+                            <div class="col-xs-8">
+                                <span t-field="o.user_id"/>
+                            </div>
+                        </div>
+
+                        <div class="row text-center">
+                            <strong>
+                                Autorizado mediante resolución Num DTG-R-48-2019 del 7 de octubre de 2016
+                            </strong>
+                            <br/>
+                        </div>
+
+
+                        </t>
+                    </div>
+
+                </t>
+
+
+            </t>
+        </template>
+
+        <template id="report_invoice_receipt_prueba">
+            <t t-call="report.html_container">
+
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <style>
+                            h4 {
+                                margin-top: 3px;
+                                margin-bottom: 3px;
+                                font-size: 19px;
+                            }
+                            h3 {
+                                margin-top: 3px;
+                                margin-bottom: 3px;
+                            }
+                            span {
+                                font-size: 19px;
+                            }
+                            strong {
+                                font-size: 19px;
+                            }
+                            body {
+                                font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
+                            }
+                            .noborder &gt; tbody &gt; tr &gt; td {
+                                border: none!important;
+                                padding-top: 0px;
+                                padding-bottom: 0px;
+                            }
+                        </style>
+                        <t t-foreach="['Original']" t-as="copia">
+
+
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h2 t-esc="o.company_id.name"/>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px;">
+                            <div class="col-xs-12 text-center">
+                                <h4 t-esc="o.company_id.company_registry"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4>Céd. <span t-esc="o.company_id.vat"/></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4>Tels. <span t-esc="o.company_id.phone"/></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h4 t-esc="o.company_id.email"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h3 t-esc="o.company_id.rml_header1"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h3 t-if="not o.is_refund">
+                                    Factura de contado
+                                </h3>
+                                <h3 t-if="o.is_refund or o.type=='out_refund'">
+                                    Nota de crédito
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Número:</span>
+                                <span t-esc="o.number"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Fecha y hora:</span>
+                                <span t-field="o.validate_date" class="text-uppercase" t-field-options="{&quot;format&quot;: &quot;d/MM/y hh:m:s a&quot;}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Cliente:</span>
+                                <t t-if="o.nombre_facturar">
+                                    <span t-esc="o.nombre_facturar.upper()"/>
+                                </t>
+                                <t t-if="not o.nombre_facturar">
+                                    <span t-field="o.partner_id"/>
+                                </t>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Céd:</span>
+                                <span t-field="o.partner_id.ref"/>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="o.comment">
+                            <div class="col-xs-12">
+                                <span>Nota:</span>
+                                <span t-field="o.comment"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <span>
+                                    Detalle
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="o.refund_invoice_id and o.type=='out_refund'">
+                            <div class="col-xs-12">
+                                <strong>Nota de crédito aplicada por concepto de: </strong>
+                                <span class="text-uppercase" t-field="o.name"/>
+                                <br/>
+                                <strong>Aplicada a: </strong><span class="text-uppercase" t-field="o.refund_invoice_id"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>CODIGO.</th>
+                                    <th style="width:300px;" colspan="2">DESCR.</th>
+                                </tr>
+                                <tr>
+                                    <th>CANT.</th>
+                                    <th>P. VENTA</th>
+                                    <th class="text-right" style="width:200px;">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <strong t-esc="(line.product_id.id) and line.product_id.default_code"/>
+                                        </td>
+                                        <td style="width:300px;" colspan="2">
+                                            <span t-esc="(line.product_id.id) and line.product_id.name or line.name" style="font-size: 22px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">
+                                            <strong t-field="line.quantity"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_unit"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.price_subtotal"/>
+                                            <t t-if="line.invoice_line_tax_ids">
+                                                <strong>*</strong>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <table class="table noborder">
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Sub-total:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_untaxed"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Descuento:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total_discount"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Impuestos:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_tax"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Total:
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.amount_total"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td class="text-right">
+                                    <strong>* = Gravado</strong>
+                                </td>
+                            </tr>
+                        </table>
+                        <h3 class="text-center">Forma de Pago</h3>
+                        <table class="table table-condensed">
+                            <tr>
+                                <td class="text-center">
+                                    Tipo
+                                </td>
+                                <td class="text-center">
+                                    Ref.
+                                </td>
+                                <td class="text-center">
+                                    Monto
+                                </td>
+                            </tr>
+                            <tr t-foreach="o.payment_move_line_ids" t-as="pay">
+                                <td>
+                                    <span t-field="pay.journal_id"/>
+                                </td>
+                                <td>
+                                    <span t-field="pay.ref"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="pay.credit"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <span>Vendedor</span>
+                            </div>
+                            <div class="col-xs-8">
+                                <span t-field="o.user_id"/>
+                            </div>
+                        </div>
+
+                        <div class="row text-center">
+                            <strong>
+                                Autorizado mediante oficio #1197 del 12/08/97 de la D.G.T.D
+                            </strong>
+                            <br/>
+                            <span t-if="not o.is_refund">
+                                Devoluciones solo con factura máximo 3 días, en buen estado,
+                                <u>No se aceptan devoluciones de partes electricas</u>
+                            </span>
+                        </div>
+
+
+                        </t>
+                    </div>
+
+                </t>
+
+
+            </t>
+        </template>
+
+
+        <report
+            id="action_report_invoice_receipt"
+            string="Tiquete"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="recibo_factura.report_invoice_receipt"
+            file="recibo_factura.report_invoice_receipt"
+        />
+        <report
+            id="action_report_invoice_receipt_prueba"
+            string="Tiquete2"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="recibo_factura.report_invoice_receipt_prueba"
+            file="recibo_factura.report_invoice_receipt_prueba"
+        />
+
+
+        <record id="action_report_invoice_receipt" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_invoicereceipt1"/>
+        </record>
+
+        <record id="action_report_invoice_receipt_prueba" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_invoicereceipt1_prueba"/>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+	<data>
+
+
+        <record id="paperformat_proforma_euro" model="report.paperformat">
+            <field name="name">European A4 Proforma</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+
+		<template id="report_sale_order_document_proforma">
+
+			<t t-call="report.html_container">
+
+		      <div class="row" t-foreach="[{'name': 'ORIGINAL', 'num': 1}]" t-as="repeticion">
+			        <div class="header" style="font-size: 16px !important; line-height: 170%;">
+						<style>
+							.table-bordered {
+								border: 1px solid #000;
+							}
+
+							.table-bordered2 {
+								border-collapse: inherit;
+							}
+							.table-bordered2 {
+								border-top: none;
+							}
+							.table-bordered2 &gt; thead &gt; tr {
+								padding-bottom: 10px;
+							}
+							.table-bordered2 &gt; tbody &gt; tr &gt; td{
+								border: 1px solid #000;
+								border-left: 1px solid;
+								padding-top: 0px;
+								padding-bottom: 0px;
+								border-collapse: collapse;
+								border-radius: 1em;
+
+							}
+							.table-bordered2 &gt; thead &gt; tr &gt; th{
+								border-bottom: 1px solid  #000;
+							}
+						</style>
+						<div class="row">
+							<div class="col-xs-3">
+
+							</div>
+							<div class="col-xs-6">
+								<table class="table table-bordered2 text-center" style="border-collapse: inherit!important;border:none!important;">
+									<tbody>
+										<tr>
+											<td>
+												<strong class="text-uppercase">Juan carlos miranda barrantes</strong>
+												<br/>
+												<span>Ced: 7-076-193</span>
+												<br/>
+												<span class="text-uppercase">atenas, 100 este, 50 norte del banco nacional</span>
+												<div class="row">
+													<div class="col-xs-12 text-center">
+														<span class="text-uppercase">tel: 2446-8678  2446-4018  2446-5713</span>
+													</div>
+												</div>
+												<span>E-mail: info@scmiranda.com</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-xs-3 text-center">
+								<span class="text-uppercase">PROFORMA:</span>
+								<div class="row">
+									<div class="col-xs-12">
+										<strong t-esc="o.name"/>
+									</div>
+								</div>
+
+
+							<div class="row">
+								<div class="col-xs-12">
+									<ul class="list-inline">
+										<li>Página:</li>
+										<li><span class="page"/></li>
+										<li>/</li>
+										<li><span class="topage"/></li>
+									</ul>
+								</div>
+							</div>
+
+
+							</div>
+						</div>
+					</div>
+				    <div class="page" style="font-size: 14px;">
+						<style>
+							.table-bordered {
+								border: 1px solid #000;
+								border-radius: 15px;
+							}
+							.table-bordered &gt; thead &gt; tr {
+								border: none;
+								padding-bottom: 10px;
+							}
+							.table-bordered &gt; tbody &gt; tr &gt; td{
+								border: 1px solid white !important;
+								padding-top: 0px;
+								padding-bottom: 0px;
+							}
+							.table-bordered &gt; thead &gt; tr &gt; th{
+								border-top: 1px solid #000;
+								border-bottom: 1px solid #000;
+								border-left: none;
+								border-right: none;
+							}
+
+							.table-bordered2 {
+								border-collapse: inherit;
+							}
+							.table-bordered2 {
+								border-top: none;
+							}
+							.table-bordered2 &gt; thead &gt; tr {
+								padding-bottom: 10px;
+							}
+							.table-bordered2 &gt; tbody &gt; tr &gt; td{
+								border: 1px solid #000;
+								border-left: 1px solid;
+								padding-top: 0px;
+								padding-bottom: 0px;
+								border-collapse: collapse;
+								border-radius: 1em;
+
+							}
+							.table-bordered2 &gt; thead &gt; tr &gt; th{
+								border-bottom: 1px solid  #000;
+							}
+
+							.fondo-gris {
+								background: #f2f2f2;
+							}
+							.watermark
+							{
+								position: fixed;
+								top: 300px;
+								left: 200px;
+								opacity: 0.1;
+								z-index: 99;
+								color: #000;
+								FONT-SIZE: 90px;
+							}
+						</style>
+
+						<div class="row">
+							<div class="col-xs-8" style="padding-right: 0px !important">
+								<table class="table table-bordered2" style="height: 80px!important;border-collapse: inherit!important;border:none!important;margin-bottom: 5px !important;">
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+													<div class="col-xs-12">
+														<span>Cliente:</span>
+														<strong class="text-uppercase" t-field="o.partner_id"/>
+													</div>
+													<div class="col-xs-12" t-if="o.related_project_id">
+														<span>Proyecto:</span>
+														<strong class="text-uppercase" t-field="o.related_project_id.name"/>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-12">
+														<span>Dirección:</span>
+														<span t-field="o.partner_id.street"/>
+														<span t-field="o.partner_id.street2"/>
+														<span>&amp;nbsp;</span>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-4">
+														<span>Código:</span>
+														<span t-field="o.partner_id.code"/>
+													</div>
+													<div class="col-xs-4">
+														<span>Cédula:</span>
+														<span t-field="o.partner_id.ref"/>
+													</div>
+													<div class="col-xs-4">
+														<span>Teléfono:</span>
+														<span t-field="o.partner_id.phone"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-xs-4" style="padding-left: 0px !important">
+								<table class="table table-bordered2" style="height: 80px!important;border-collapse: inherit!important;border:none!important;">
+									<tbody>
+										<tr>
+											<td>
+												<div class="row text-center">
+													<div class="col-xs-12">
+														<span>Fecha:</span>
+														<br/>
+														<span t-field="o.date_order" class="text-uppercase" t-field-options="{&quot;format&quot;: &quot;d/MM/y&quot;}"/>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-4">
+
+														<span>Vendedor:</span>
+													</div>
+													<div class="col-xs-8">
+
+														<span t-field="o.user_id"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="watermark">
+                                                      <img t-attf-src="data:image/*;base64,{{o.company_id.logo}}" t-att-alt="o.company_id.name" height="350" width="500"/>
+                                                </div>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th class="text-center">
+										CÓDIGO
+									</th>
+									<th class="text-center">
+										NOMBRE
+									</th>
+									<th class="text-center">
+										CANT.
+									</th>
+									<th class="text-center">
+										%DESC
+									</th>
+									<th class="text-center">
+										EXENTO
+									</th>
+									<th class="text-center">
+										GRAVADO
+									</th>
+									<th class="text-center">
+										SUBTOTAL
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr t-foreach="o.fillLines()" t-as="line">
+									<t t-if="not line.get('blank', False)">
+										<t t-set="imp" t-value="line['l'].tax_id.compute_all(line['l'].price_unit, False, 1, product=line['l'].product_id, partner=False)"/>
+									</t>
+									<td class="text-left">
+										<t t-if="not line.get('blank', False)">
+											<span t-esc="(line['l'].product_id) and line['l'].product_id.default_code or ' '"/>
+									    </t>
+									</td>
+									<td class="text-left">
+										<t t-if="not line.get('blank', False)">
+											<span t-esc="(line['l'].product_id) and line['l'].product_id.name[:40] or line['l'].name[:40]"/>
+									    </t>
+									</td>
+									<td class="text-center">
+										<t t-if="not line.get('blank', False)">
+										    <span t-field="line['l'].product_uom_qty"/>
+									    </t>
+									</td>
+
+
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+										    <span t-field="line['l'].discount"/>
+									    </t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+											<t t-if="line['l'].price_unit == imp['total_included']">
+												<span t-esc="o.format(line['l'].price_unit)" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+											</t>
+									    </t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+											<t t-if="line['l'].price_unit != imp['total_included']">
+												<span t-esc="o.format(imp['total_included'])" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+											</t>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+										    <span t-esc="o.format(imp['total_included'] * line['l'].product_uom_qty)"/>
+									    </t>
+									</td>
+								</tr>
+
+								<tr t-foreach="o.espaces()" t-as="line">
+									<td/>
+									<td/>
+									<td/>
+									<td>
+										<span>&amp;nbsp;</span>
+									</td>
+									<td/>
+									<td/>
+									<td/>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered2" style="border-collapse: inherit!important;border:none!important;">
+							<tbody>
+								<tr>
+									<td>
+										<strong>Detalle:</strong>
+										<br/>
+										<br/>
+										<br/>
+										<br/>
+										<span>&amp;nbsp;</span>
+										<span t-esc="o.note"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-xs-8">
+								<table class="table table-bordered2" style="height: 150px!important">
+									<tr>
+										<td>
+											<div class="row text-center">
+												<div class="col-xs-12">
+													Juan Carlos Miranda Barrantes, Céd: 7-076-193
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-6">
+													BNCR: Cta Corri: 100-1-021-002751-6
+												</div>
+												<div class="col-xs-6">
+													Cta Client: 15102110010027518 COL.
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-6">
+													BNCR: Cta Corri: 100-02-021-600205-7
+												</div>
+												<div class="col-xs-6">
+													Cta Client: 15102110026002058 DOL.
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-6">
+													BCR: Cta Corri: 001-0347611-1
+												</div>
+												<div class="col-xs-6">
+													Cta Client: 15201001034761115 COL.
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-6">
+													BCR: Cta Corri: 001-0273419-2
+												</div>
+												<div class="col-xs-6">
+													Cta Client: 15201001027341921 DOL.
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xs-6">
+													BAC: Cta Corri: 912381597
+												</div>
+												<div class="col-xs-6">
+													Cta Client: 10200009123815971 COL.
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Precios sujetos a cambios sin previo aviso. Favor consultar antes de tomar cualquier determinación, esperamos ser favorecidos con su pedido. Departamento de ventas.
+										</td>
+									</tr>
+								</table>
+
+							</div>
+							<div class="col-xs-4">
+								<table class="table table-bordered2" style="height: 150px!important">
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+													<div class="col-xs-12 text-center">
+														<strong class="text-uppercase">
+															total
+														</strong>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-12 text-center">
+														<h2>
+															<strong t-field="o.amount_total" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+														</h2>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="text-uppercase">
+													Sujeto a cambio sin previo aviso.
+												</span>
+												<br/>
+												<span class="text-uppercase">
+													gracias por su preferencia
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+				    </div>
+			  </div>
+
+		    </t>
+
+		</template>
+
+		<template id="report_sale_order_proforma_miranda">
+		    <t t-call="report.html_container">
+		        <t t-foreach="docs" t-as="o">
+		            <t t-call="account_invoice_report.report_sale_order_document_proforma" t-lang="o.partner_id.lang"/>
+		        </t>
+		    </t>
+		</template>
+
+
+
+        <!-- QWeb Reports -->
+        <report
+            id="report_sale_order_proforma_miranda_report"
+            model="sale.order"
+            string="Proforma"
+            report_type="qweb-pdf"
+            name="account_invoice_report.report_sale_order_proforma_miranda"
+            file="account_invoice_report.report_sale_order_proforma_miranda"
+            attachment_use="False"
+            attachment="'Proforma'+(object.name or '').replace('/','')+'.pdf'"
+        />
+		<!--
+
+		Reporte de ventas sale.order
+
+		-->
+
+        <record id="report_sale_order_proforma_miranda_report" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_proforma_euro"/>
+	    <field name="attachment_use" eval="False"/>
+        </record>
+
+
+	</data>
+</openerp>

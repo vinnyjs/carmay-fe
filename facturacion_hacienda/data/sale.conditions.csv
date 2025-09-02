@@ -1,0 +1,8 @@
+id,sequence,name,notes
+cr_electronic_invoice.SaleConditions_1,01,Contado,
+cr_electronic_invoice.SaleConditions_2,02,Crédito,
+cr_electronic_invoice.SaleConditions_3,03,Consignación,
+cr_electronic_invoice.SaleConditions_4,04,Apartado,
+cr_electronic_invoice.SaleConditions_5,05,Arrendamiento con opción de compra,
+cr_electronic_invoice.SaleConditions_6,06,Arrendamiento en función financiera,
+cr_electronic_invoice.SaleConditions_99,99,Otros (se debe indicar la condición de la venta),

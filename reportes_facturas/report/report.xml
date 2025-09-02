@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<openerp>
+<data noupdate="0">
+
+    <!--record id="aeroo_sample_report_id" model="ir.actions.report.xml">
+        <field name="name">Items Excel</field>
+        <field name="type">ir.actions.report.xml</field>
+        <field name="model">reporte.account.invoice</field>
+        <field name="report_name">sample_report</field>
+        <field name="report_type">aeroo</field>
+        <field name="in_format">oo-ods</field>
+        <field name='out_format' eval="ref('report_aeroo.report_mimetypes_xls_odt')"/>
+        <field name="parser_loc">reportes_facturas/report/parser.py</field>
+        <field name="report_rml">reportes_facturas/report/prueba1.ods</field>
+        <field name="parser_state">loc</field>
+        <field name="tml_source">file</field>
+    </record>
+
+
+    <record id="aeroo_sample_report_id_print_action" model="ir.values">
+      <field eval="'action'" name="key" />
+      <field eval="'client_print_multi'" name="key2" />
+      <field name="model">reporte.account.invoice</field>
+      <field name="name">Reporte Account Invoice</field>
+      <field eval="'ir.actions.report.xml,'+str(aeroo_sample_report_id)" name="value" />
+    </record-->
+
+    <report
+        id="report_account_invoice_crm_xlsx"
+        model="reporte.account.invoice"
+        string="Reporte Facturas"
+        report_type="xlsx"
+        name="reportes_facturas.report_account_invoice_report.xlsx"
+        file="reportes_facturas.report_account_invoice_report.xlsx"
+        attachment_use="False"
+    />
+
+    <!--report
+        id="report_account_invoice_crm_xlsx_consolidado"
+        model="reporte.account.invoice"
+        string="Reporte Consolidado"
+        report_type="xlsx"
+        name="reportes_facturas.report_account_invoice_report_consolidado.xlsx"
+        file="reportes_facturas.report_account_invoice_report_consolidado.xlsx"
+        attachment_use="False"
+    />
+    <report
+        id="report_account_invoice_crm_xlsx_consolidado"
+        model="reporte.account.invoice"
+        string="Reporte Por vendedor"
+        report_type="xlsx"
+        name="reportes_facturas.report_account_invoice_report_por_vendedor.xlsx"
+        file="reportes_facturas.report_account_invoice_report_por_vendedor.xlsx"
+        attachment_use="False"
+    /-->
+
+
+    <record id="view_reporte_account_invoice" model="ir.ui.view">
+        <field name="name">reporte.account.invoice.form</field>
+        <field name="model">reporte.account.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Account charts">
+                <group>
+                    <label for="date_start" string="Fecha(s)"/>
+                    <div>
+                        <field name="date_start" class="oe_inline"/> -
+                        <field name="date_end" class="oe_inline"/>
+                    </div>
+                </group>
+                <footer>
+                    <button string="Descargar Datos" name="print_report" class="oe_highlight" type="object"/>
+                    <!--button string="Descargar Consolidado" name="print_report_consolidado" class="oe_highlight" type="object"/>
+                    <button string="Descargar x Vendedor" name="print_report_vendedor" class="oe_highlight" type="object"/-->
+                    o
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_reporte_account_invoice" model="ir.actions.act_window">
+        <field name="name">Reporte Facturas</field>
+        <field name="res_model">reporte.account.invoice</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_reporte_account_invoice"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <!--menuitem id="base_menu" name="Reportes Biopharma"
+         sequence="2" parent="base.menu_board_root"/-->
+
+    <menuitem id="menu_reporte_account_invoice" action="action_reporte_account_invoice"
+        parent="account.account_management_menu" name="Reporte Facturas"/>
+
+
+
+</data>
+</openerp>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="sale_order_form_inherit" model="ir.ui.view">
+			<field name="name">sale.order.form.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='order_line']//tree//field[@name='price_unit']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<xpath expr="//field[@name='order_line']//tree//field[@name='price_subtotal']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<!--fin tree-->
+
+				<xpath expr="//field[@name='order_line']//form//field[@name='price_unit']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<xpath expr="//field[@name='order_line']//form//field[@name='tax_id']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<xpath expr="//field[@name='order_line']//form//field[@name='price_subtotal']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<!--fin form-->
+
+				<xpath expr="//div[@class='row'][2]/div[@class='col-xs-4 text-muted']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+				<!--fin kanban-->
+
+				<xpath expr="//group[@name='sale_total']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+
+			</field>
+		</record>
+
+		<record id="sale_order_tree_inherit" model="ir.ui.view">
+			<field name="name">sale.order.tree.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_quotation_tree"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='amount_total']" position="attributes">
+					<attribute name="groups">sale.group_show_price_total</attribute>
+				</xpath>
+
+			</field>
+		</record>
+
+	</data>
+</odoo>

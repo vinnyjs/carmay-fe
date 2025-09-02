@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="paperformat_euro" model="report.paperformat">
+		    <field name="name">European A4 Exportacion</field>
+		    <field name="default" eval="True" />
+		    <field name="format">A4</field>
+		    <field name="page_height">0</field>
+		    <field name="page_width">0</field>
+		    <field name="orientation">Portrait</field>
+		    <field name="margin_top">20</field>
+		    <field name="margin_bottom">28</field>
+		    <field name="margin_left">3</field>
+		    <field name="margin_right">3</field>
+		    <field name="header_line" eval="False" />
+		    <field name="header_spacing">40</field>
+		    <field name="dpi">90</field>
+		</record>
+
+	</data>
+	<data>
+
+		<template id="report_account_invoice_facturaelectronica_document_exportacion">
+
+			<t t-call="report.html_container">
+				<div class="page">
+
+					<style>
+						div.row-cotica {
+							border: 1px solid black;
+						}
+						span {
+							font-size: 11px !important;
+						}
+						strong {
+							font-size: 12px !important;
+						}
+						table.sin-borde > tbody > tr > td {
+							border-top: none !important;
+							padding: 0px !important;
+						}
+						table.table > tbody > tr > td {
+							padding: 0px !important;
+							line-height: 1;
+						}
+						table.table-bordeada > tbody > tr > td, table.table-bordeada > tbody > tr > th{
+							border-left: 1px solid #000000;
+						}
+						table {
+							margin-bottom: 0px !important;
+						}
+						div.col-no-padding {
+							padding-left: 0px !important;
+							padding-right: 0px !important;
+						}
+					</style>
+					<div class="row row-cotica">
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-xs-offset-3 col-xs-6 text-center">
+									<img t-if="o.company_id.logo" t-attf-src="data:image/*;base64,{{o.company_id.logo}}" t-att-alt="o.company_id.name" height="60" width="300"/>
+									<br/>
+										<span>Direccion: 1 KILOMETRO NORTE DEL CRUCE DE GRECIA</span>
+									<br/>
+										<span>EDIFICIO SERVICIOS TECNICOS ENTERPRICE, ALAJUELA, COSTA RICA</span>
+									<br/>
+										<span>Cedula Juridica: 3101349862</span>
+								</div>
+								<div class="col-xs-offset-1 col-xs-2">
+									<br/>
+									<br/>
+									<div class="row text-center row-cotica">
+										<!--span t-esc="o.clave_envio_hacienda and o.clave_envio_hacienda[21:41] or ''"/-->
+										<span>INVOICE N°:</span>
+										<span t-esc="o.number or 'N/A'"/>
+									</div>
+								</div>
+
+							</div>
+							<div class="row">
+								<div class="col-xs-4 col-no-padding">
+									<table class="table sin-borde">
+										<tr>
+											<td><span>Date:</span></td>
+											<td><span t-esc="o.parse_date(o.date_invoice)"/></td>
+										</tr>
+										<tr>
+											<td><span>Export ID:</span></td>
+											<td><span t-esc="o.export_id"/></td>
+										</tr>
+										<tr>
+											<td><span>Country of Origin:</span></td>
+											<td><span>Costa Rica</span></td>
+										</tr>
+									</table>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="row row-cotica">
+							<table class="table table-bordeada">
+								<tbody>
+									<tr style="background-color: #f2f2f2">
+										<td>
+											<strong>CONSIGNED TO:</strong>
+										</td>
+										<td>
+											<strong>SOLD TO:</strong>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span t-field="o.partner_id"/><br/>
+											<span t-raw="o.consigned_to"/>
+										</td>
+										<td>
+											<span t-field="o.partner_id"/><br/>
+											<span t-raw="o.sold_to"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					</div>
+					<br/>
+					<div class="row row-cotica">
+						<table class="table table-bordeada">
+							<tbody>
+								<tr style="background-color: #f2f2f2">
+									<th>
+										<span>QTY</span>
+									</th>
+									<th>
+										<span>Description of Goods</span>
+									</th>
+									<th>
+										<span>Pack tipe</span>
+									</th>
+									<th>
+										<span>Gross Weight</span>
+									</th>
+									<th>
+										<span>Net Weight</span>
+									</th>
+									<th>
+										<span>Unit Price ($) FOB LIMON</span>
+									</th>
+									<th>
+										<span>Total Amount ($)</span>
+									</th>
+								</tr>
+								<tr t-foreach="o.fillLines()" t-as="l">
+									<t t-if="l.quantity > 0">
+										<td class="text-center">
+											<span t-field="l.quantity"/>
+										</td>
+										<td class="text-center">
+											<span t-field="l.name"/>
+										</td>
+										<td class="text-center">
+											<span>
+												<span t-field="l.pack_type"/>
+											</span>
+										</td>
+										<td class="text-center">
+											<span>
+												<span t-field="l.gross_weight"/>
+											</span>
+										</td>
+										<td class="text-center">
+											<span>
+												<span t-field="l.net_weight"/>
+											</span>
+										</td>
+										<td class="text-center">
+											<span t-field="l.price_unit"/>
+										</td>
+										<td class="text-center">
+											<span t-field="l.price_subtotal"/>
+										</td>
+									</t>
+									<t t-if="int(l.quantity	) == 0">
+										<td colspan="7">
+											<![CDATA[
+												&nbsp;
+											]]>
+										</td>
+									</t>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<br/>
+					<div class="row row-cotica">
+							<table class="table sin-borde">
+								<tbody>
+									<tr style="background-color: #f2f2f2">
+										<th>
+											<span>Shipping Line</span>
+										</th>
+										<th>
+											<span>Vessel</span>
+										</th>
+										<th>
+											<span>Voyage</span>
+										</th>
+										<th>
+											<span>Bill of Lading</span>
+										</th>
+									</tr>
+									<tr>
+										<td class="text-center">
+											<span t-esc="o.shipping_line"/>
+										</td>
+										<td class="text-center">
+											<span t-esc="o.vessel"/>
+										</td>
+										<td class="text-center">
+											<span t-esc="o.voyage"/>
+										</td>
+										<td class="text-center">
+											<span t-esc="o.bill_of_lading"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					</div>
+					<div class="row row-cotica">
+						<div class="col-xs-6 col-no-padding">
+							<table class="table text-center table-bordeada">
+								<tr style="background-color: #f2f2f2">
+									<th>
+										<strong>CONTAINER</strong>
+									</th>
+									<th>
+										<strong>SEAL</strong>
+									</th>
+								</tr>
+								<tr>
+									<td>
+										<span t-esc="o.container"/>
+									</td>
+									<td>
+										<span t-esc="o.seal"/>
+									</td>
+								</tr>
+								<tr t-foreach="o.fillLinesContainer()" t-as="l">
+									<td>
+										<span><![CDATA[
+										&nbsp;
+										]]></span>
+									</td>
+									<td>
+										<span><![CDATA[
+										&nbsp;
+										]]></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-xs-offset-1 col-xs-5 col-no-padding">
+							<table class="table text-center table-bordeada">
+								<tr style="background-color: #f2f2f2">
+									<th>
+										<strong>CONTAINER</strong>
+									</th>
+									<th>
+										<strong>SEAL</strong>
+									</th>
+								</tr>
+								<tr t-foreach="o.fillLinesContainer()" t-as="l">
+									<td>
+										<span><![CDATA[
+										&nbsp;
+										]]></span>
+									</td>
+									<td>
+										<span><![CDATA[
+										&nbsp;
+										]]></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+					<!--TABLA TOTALES-->
+					<div class="row row-cotica">
+						<div class="col-xs-6 col-no-padding">
+							<table class="table table-bordeada">
+								<tr>
+									<td class="text-right">
+										<span>Total Quantity:</span>
+									</td>
+									<td class="text-center">
+										<span t-esc="sum([l.quantity for l in o.invoice_line_ids])"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>Total Net Weight:</span>
+									</td>
+									<td class="text-center">
+										<span t-esc="sum([l.net_weight for l in o.invoice_line_ids])"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>Total Gross Weight:</span>
+									</td>
+									<td class="text-center">
+										<span t-esc="sum([l.gross_weight for l in o.invoice_line_ids])"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<![CDATA[
+										&nbsp;
+										]]>
+									</td>
+									<td class="text-center">
+										<![CDATA[
+										&nbsp;
+										]]>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>INCOTERM</span>
+									</td>
+									<td class="text-center">
+										<span>FOB MOIN, COSTA RICA</span>
+									</td>
+								</tr>
+
+							</table>
+						</div>
+						<div class="col-xs-offset-1 col-xs-5 col-no-padding">
+							<table class="table text-center table-bordeada">
+								<tr>
+									<td class="text-right">
+										<span>Sub Total:</span>
+									</td>
+									<td class="text-right">
+										<span t-esc="o.amount_untaxed"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>Freight:</span>
+									</td>
+									<td class="text-right">
+										<span>-</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>Insurance:</span>
+									</td>
+									<td class="text-right">
+										<span>-</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>Expenses:</span>
+									</td>
+									<td class="text-right">
+										<span>-</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right">
+										<span>Total:</span>
+									</td>
+									<td class="text-right">
+										<span t-field="o.amount_total"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<br/>
+					<div class="row row-cotica">
+						<div class="col-xs-2 text-right">
+							<span>Valor/ Value:</span>
+						</div>
+						<div class="col-xs-10 text-center">
+							<strong t-esc="o.number2word(o.amount_total)"/>
+						</div>
+					</div>
+					<br/>
+					<div class="row row-cotica">
+						<table class="table sin-borde text-center table-bordeada">
+							<tr style="background-color: #f2f2f2">
+								<th>
+									<span>Country of Origin</span>
+								</th>
+								<th>
+									<span>Port of Loading</span>
+								</th>
+								<th>
+									<span>Country of Destination</span>
+								</th>
+								<th>
+									<span>Point of Entry</span>
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<span t-esc="o.country_of_origin"/>
+								</td>
+								<td>
+									<span t-esc="o.port_of_loading"/>
+								</td>
+								<td>
+									<span t-esc="o.country_of_destination"/>
+								</td>
+								<td>
+									<span t-esc="o.point_of_entry"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<br/>
+					<div class="row row-cotica">
+						<table class="table sin-borde text-center table-bordeada">
+							<tr style="background-color: #f2f2f2">
+								<th>
+									<span>Produced By</span>
+								</th>
+								<th>
+									<span>Crop Year</span>
+								</th>
+								<th>
+									<span>PURCHASE ORDER No.</span>
+								</th>
+								<th>
+									<span>E-Mail</span>
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<span>Comercializadora Tica Cotica S.A.</span>
+								</td>
+								<td>
+									<span>2020</span>
+								</td>
+								<td>
+									<span style="color: red" t-esc="o.purchase_order"/>
+								</td>
+								<td>
+									<span>mysanchez@coticacr.com</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<br/>
+					<div class="row row-cotica">
+						<div class="col-xs-6">
+							<span>
+								Banking Details: Banco Nacional de Costa Rica, Account: 100-02-069-600029-1
+								<br/>
+								SWIFT: BNCRCRSJ XXX
+								<br/>
+								Avenidas 1 y 3, calle 4, San Jose, Costa Rica
+								<br/>
+								Terms of payment: 60% of amount 8 bank days after receive digital BL and invoice, and rest
+								<br/>
+								40% should be paid within 14 calendar days after executing records on
+								<br/>
+								customs clearance on the territory of Russian Federation is completed.
+							</span>
+						</div>
+						<div class="col-xs-6 text-center">
+							<span>
+								Declaramos bajo juramento que los datos indicados en la presente
+								factura son ciertos y verdaderos / We declare under oath the
+								information is true.
+							</span>
+							<br/>
+							<table>
+								<tr>
+									<td>
+										<img src="/account_invoice_report_exportacion/static/src/img/sello-footer.png"/>
+									</td>
+									<td>
+										<img src="/account_invoice_report_exportacion/static/src/img/firma.png"/>
+									</td>
+								</tr>
+							</table>
+							<span style="border-top: 1px solid black;">Authorized signature/ firma</span>
+						</div>
+					</div>
+
+
+				</div>
+		    </t>
+
+		</template>
+
+		<template id="report_account_invoice_facturaelectronica_exportacion">
+		    <t t-call="report.html_container">
+		        <t t-foreach="docs" t-as="o">
+		            <t t-call="account_invoice_report_exportacion.report_account_invoice_facturaelectronica_document_exportacion" t-lang="o.partner_id.lang"/>
+		        </t>
+		    </t>
+		</template>
+
+
+    <report
+        id="report_account_invoice_exportacion"
+        model="account.invoice"
+        string="Plantilla exportación"
+        report_type="qweb-html"
+        name="account_invoice_report_exportacion.report_account_invoice_facturaelectronica_exportacion"
+        file="account_invoice_report_exportacion.report_account_invoice_facturaelectronica_exportacion"
+        paperformat="account_invoice_report_exportacion.paperformat_euro"/>
+
+	</data>
+</openerp>

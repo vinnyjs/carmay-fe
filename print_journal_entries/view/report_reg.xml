@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- QWeb Reports for Journal Entries -->
+        <report
+            id="print_journal_entries_report"
+            model="account.move"
+            menu="True"
+            report_type="qweb-pdf"
+            string="Plantilla de Asiento"
+            name="print_journal_entries.project_journal_items_id"
+            file="project_journal_items_id"
+         />
+        
+        
+    </data>
+</openerp>

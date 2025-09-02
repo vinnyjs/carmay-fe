@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="invoice_supplier_form_form_inherit" model="ir.ui.view">
+			<field name="name">account.invoice.form.inherit</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_supplier_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//button[@name='action_invoice_cancel']" position="after">
+					<button name="generar_compra" type="object" string="Generar compra" attrs="{'invisible': ['|', ('state', 'in', ('cancel')), ('purchase_id','!=',False)]}"/>
+				</xpath>
+
+			</field>
+		</record>
+
+		<record id="facturacion_hacienda_invoice_form_inherit" model="ir.ui.view">
+			<field name="name">account.invoice.form.inherit</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="facturacion_hacienda.invoice_supplier_form_inherit"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='state_invoice_partner']" position="replace">
+					<field name="state_invoice_partner" attrs="{'invisible':[('xml_supplier_approval', '=', False)], 'readonly':[('state','!=', 'draft')]}"/>
+				</xpath>
+
+			</field>
+		</record>
+
+		<record id="purchase_order_invoice_form_inherit" model="ir.ui.view">
+			<field name="name">account.invoice.form.inherit.order</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='purchase_id']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+
+			</field>
+		</record>
+
+	</data>
+</odoo>

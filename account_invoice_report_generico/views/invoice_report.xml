@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="paperformat_euro" model="report.paperformat">
+		    <field name="name">European A4 Duplicate</field>
+		    <field name="default" eval="True" />
+		    <field name="format">A4</field>
+		    <field name="page_height">0</field>
+		    <field name="page_width">0</field>
+		    <field name="orientation">Portrait</field>
+		    <field name="margin_top">41</field>
+		    <field name="margin_bottom">28</field>
+		    <field name="margin_left">3</field>
+		    <field name="margin_right">3</field>
+		    <field name="header_line" eval="False" />
+		    <field name="header_spacing">40</field>
+		    <field name="dpi">90</field>
+		</record>
+
+
+		<record id="invoice_form_inherit" model="ir.ui.view">
+			<field name="name">account.invoice.form.inherit</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form"/>
+			<field name="arch" type="xml">
+				<field name="journal_id" position="after">
+					<field name="lineas_extra" />
+		                </field>
+			</field>
+		</record>
+
+	</data>
+	<data>
+		<template id="report_account_invoice_facturaelectronica_document">
+
+			<t t-call="report.html_container">
+
+		      <div class="row" t-foreach="[{'name': 'ORIGINAL', 'num': 1}]" t-as="repeticion">
+			        <div class="header" style="font-size: 16px !important; line-height: 170%;">
+						<style>
+							.table-bordered {
+								border: 1px solid #000;
+							}
+
+							.table-bordered2 {
+								border-collapse: inherit;
+							}
+							.table-bordered2 {
+								border-top: none;
+							}
+							.table-bordered2 &gt; thead &gt; tr {
+								padding-bottom: 10px;
+							}
+							.table-bordered2 &gt; tbody &gt; tr &gt; td{
+								border: 1px solid #000;
+								border-left: 1px solid;
+								padding-top: 0px;
+								padding-bottom: 0px;
+								border-collapse: collapse;
+								border-radius: 1em;
+
+							}
+							.table-bordered2 &gt; thead &gt; tr &gt; th{
+								border-bottom: 1px solid  #000;
+							}
+						</style>
+						<div class="row">
+							<div class="col-xs-3">
+								<img t-if="o.company_id.logo" t-attf-src="data:image/*;base64,{{o.company_id.logo}}" t-att-alt="o.company_id.name" height="120" width="190"/>
+							</div>
+							<div class="col-xs-6">
+								<table class="table table-bordered2 text-center" style="border-collapse: inherit!important;border:none!important;">
+									<tbody>
+										<tr>
+											<td>
+												<strong class="text-uppercase" t-field="o.company_id"/>
+												<br/>
+												<strong>Ced: </strong><span t-esc="o.company_id.ref or o.company_id.vat"/>
+												<br/>
+												<strong>Tel: </strong><span t-esc="o.company_id.phone"/>
+												<strong t-if="o.company_id.fax">Fax: </strong><span t-if="o.company_id.fax" t-esc="o.company_id.fax"/>
+												<br/>
+												<strong>Correo: </strong><span t-esc="o.company_id.email"/>
+												<t t-if="o.company_id.website"><br/><strong>Sitio Web: </strong><a t-att-href="o.company_id.website"/><t t-esc="o.company_id.website"/></t>
+												<br/>
+												<strong>Dirección: </strong>
+												<span class="text-capitalize">
+													<span t-field="o.company_id.state_id"/>,
+													<span t-field="o.company_id.county_id"/>,
+													<span t-field="o.company_id.district_id"/>,
+													<span t-field="o.company_id.neighborhood_id"/>,
+													<span t-field="o.company_id.street"/>
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-xs-3 text-center">
+								<span class="text-uppercase">factura:</span>
+								<div class="row">
+									<div class="col-xs-12">
+										<h5 t-if="o.clave_envio_hacienda">
+											<strong t-esc="o.clave_envio_hacienda[21:41]"/>
+										</h5>
+										<strong>Condición:</strong><span t-if="o.payment_term_id and (o.payment_term_id.line_ids[0].days==0)" class="text-uppercase">contado</span>
+										<span t-if="o.payment_term_id and (o.payment_term_id.line_ids[0].days!=0)" class="text-uppercase">crédito</span>
+										<br/>
+										<t t-if="o.payment_term_id and (o.payment_term_id.line_ids[0].days!=0)"><strong>Plazo: </strong><span t-esc="o.payment_term_id.line_ids[0].days"/> días</t>
+									</div>
+								</div>
+
+
+							<!--h3 class="text-center" style="margin-bottom: 0px;">
+								<strong t-esc="repeticion['name']"/>
+							</h3-->
+
+
+							</div>
+
+						</div>
+					</div>
+				    <div class="page" style="font-size: 14px;padding-top:5px !important">
+						<style>
+							.table-bordered {
+								border: 1px solid #000;
+								border-radius: 15px;
+							}
+							.table-bordered &gt; thead &gt; tr {
+								border: none;
+								padding-bottom: 10px;
+							}
+							.table-bordered &gt; tbody &gt; tr &gt; td{
+								border: 1px solid white !important;
+								padding-top: 0px;
+								padding-bottom: 0px;
+							}
+							.table-bordered &gt; thead &gt; tr &gt; th{
+								border-top: 1px solid #000;
+								border-bottom: 1px solid #000;
+								border-left: none;
+								border-right: none;
+							}
+
+							.table-bordered2 {
+								border-collapse: inherit;
+							}
+							.table-bordered2 {
+								border-top: none;
+							}
+							.table-bordered2 &gt; thead &gt; tr {
+								padding-bottom: 10px;
+							}
+							.table-bordered2 &gt; tbody &gt; tr &gt; td{
+								border: 1px solid #000;
+								border-left: 1px solid;
+								padding-top: 0px;
+								padding-bottom: 0px;
+								border-collapse: collapse;
+								border-radius: 1em;
+
+							}
+							.table-bordered2 &gt; thead &gt; tr &gt; th{
+								border-bottom: 1px solid  #000;
+							}
+
+							.fondo-gris {
+								background: #f2f2f2;
+							}
+							.watermark
+							{
+								position: fixed;
+								top: 550px;
+								left: 200px;
+								opacity: 0.1;
+								z-index: 99;
+								color: #000;
+								FONT-SIZE: 90px;
+							}
+						</style>
+						<div class="row">
+							<div class="col-xs-12">
+								<table class="table table-bordered2" style="border-collapse: inherit!important;border:none!important;margin-bottom: 5px !important;">
+									<tbody>
+										<tr>
+											<td>
+												<strong>Clave Numérica:</strong>
+												<span t-field="o.clave_envio_hacienda"/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-8" style="padding-right: 0px !important">
+								<table class="table table-bordered2" style="height: 90px!important;border-collapse: inherit!important;border:none!important;margin-bottom: 5px !important;">
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+													<div class="col-xs-12">
+														<strong>Cliente:</strong>
+														<span class="text-uppercase" t-field="o.partner_id"/>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-12">
+														<strong>Dirección:</strong>
+														<span t-field="o.partner_id.street"/>
+														<span t-field="o.partner_id.street2"/>
+														<span>&amp;nbsp;</span>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-6">
+														<strong>Núm. de identificación:</strong>
+														<span t-field="o.partner_id.ref"/>
+													</div>
+													<div class="col-xs-6" t-if="o.partner_id.code">
+														<strong>Código:</strong>
+														<span t-field="o.partner_id.code"/>
+													</div>
+												</div>
+												<div class="row">
+
+													<div class="col-xs-6">
+														<strong>Correo:</strong>
+														<span t-field="o.partner_id.email"/>
+													</div>
+
+													<div class="col-xs-6">
+														<strong>Teléfono:</strong>
+														<span t-field="o.partner_id.phone"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-xs-4" style="padding-left: 0px !important">
+								<table class="table table-bordered2" style="height: 90px!important;border-collapse: inherit!important;border:none!important;margin-bottom: 5px !important;">
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+													<div class="col-xs-6">
+														<strong>Fecha factura:</strong>
+													</div>
+													<div class="col-xs-6 text-right">
+														<span t-field="o.date_invoice" t-field-options="{&quot;format&quot;: &quot;d/MM/y&quot;}"/>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-5">
+														<strong>Vence:</strong>
+														<br/>
+														<strong>Vendedor:</strong>
+													</div>
+													<div class="col-xs-7 text-right">
+														<span t-field="o.date_due"/>
+														<br/>
+														<span t-esc="o.user_id.name[:19]"/>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-7">
+														<strong>Método de Pago:</strong>
+													</div>
+													<div class="col-xs-5 text-right">
+														<span t-field="o.payment_methods_id"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!--div class="watermark"><strong t-esc="repeticion['name']"/></div-->
+						<table class="table table-bordered" style="margin-bottom: 0px !important;">
+							<thead>
+								<tr>
+									<th class="text-center">
+										CÓD
+									</th>
+									<th class="text-center" style="width: 300px;">
+										DESCRIPCIÓN
+									</th>
+									<th class="text-center">
+										CANTIDAD
+									</th>
+									<!--th class="text-center">
+										UNIDAD MEDIDA
+									</th-->
+									<th class="text-center" style="width: 100px;">
+										PRECIO
+									</th>
+									<th class="text-center">
+										% DESC
+									</th>
+									<th class="text-center" style="width: 100px;">
+										IMPUESTO
+									</th>
+									<th class="text-center" style="width: 115px;">
+										SUBTOTAL
+									</th>
+									<th class="text-center" style="width: 115px;">
+										TOTAL
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr t-foreach="o.fillLines()" t-as="line">
+									<t t-if="not line.get('blank', False)">
+										<t t-set="imp" t-value="line['l'].invoice_line_tax_ids.compute_all(line['l'].price_unit, False, 1, product=line['l'].product_id, partner=False)"/>
+									</t>
+									<td class="text-center">
+										<t t-if="not line.get('blank', False)">
+											<span t-esc="(line['l'].product_id) and line['l'].product_id.default_code or ' '"/>
+									    </t>
+										<t t-if="line.get('blank', False)">
+											<span>&amp;nbsp;</span>
+									    </t>
+									</td>
+									<td class="text-left">
+										<t t-if="not line.get('blank', False)">
+											<span class="text-uppercase" t-esc="line['l'].name[:45]"/>
+									    </t>
+										<t t-if="line.get('blank', False)">
+											<span>&amp;nbsp;</span>
+									    </t>
+									</td>
+									<td class="text-center">
+										<t t-if="not line.get('blank', False)">
+										    <span t-field="line['l'].quantity"/>
+									    </t>
+									</td>
+									<!--td class="text-center">
+										<t t-if="not line.get('blank', False)">
+										    <span t-field="line['l'].uom_id.code"/>
+									    </t>
+									</td-->
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+											<span t-esc="o.format(line['l'].price_unit)"/>
+									    </t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+										    <span t-field="line['l'].discount"/>
+									    </t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+										    <!--span t-esc="o.format(imp['total_included'] * line['l'].quantity)"/-->
+											<span t-field="line['l'].tax_amount"/>
+									    </t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+
+											<span t-esc="o.format(line['l'].price_subtotal)"/>
+									    </t>
+									</td>
+									<td class="text-right">
+										<t t-if="not line.get('blank', False)">
+										    <span t-esc="o.format(line['l'].price_subtotal + line['l'].tax_amount)"/>
+									    </t>
+									</td>
+								</tr>
+
+								<tr t-foreach="o.espaces()" t-as="line">
+									<td/>
+									<td/>
+									<td/>
+									<td>
+										<span>&amp;nbsp;</span>
+									</td>
+									<td/>
+									<td/>
+									<td/>
+									<td/>
+								</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered2" style="border-collapse: inherit!important;border:none!important;margin-bottom:0px !important; margin-top:0px !important;padding-bottom:3px !important; padding-top:0px !important;">
+							<tbody>
+								<tr>
+									<td>
+										<strong>Detalle:</strong>
+										<span>&amp;nbsp;</span>
+										<span t-esc="o.comment"/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div class="row">
+							<div class="col-xs-8" style="margin-bottom:0px !important; margin-top:0px !important;padding-bottom:0px !important; padding-top:0px !important;">
+								<table class="table table-bordered2" style="height: 150px!important">
+									<tr>
+										<td>
+											<div class="row">
+												<div class="col-xs-12">
+											<span t-esc="o.amount_to_text(o.amount_total, o.currency_id)"/>
+												</div>
+											</div>
+											<hr style="margin: 0px;padding: 0px;border-top: 1px solid;"/>
+											<div class="row" t-foreach="o.company_id.bank_ids" t-as="cb">
+												<div class="col-xs-7">
+													<strong t-field="cb.bank_id"/>: Cta: <span t-field="cb.acc_number"/> <strong t-field="cb.currency_id"/>
+												</div>
+												<div class="col-xs-5">
+													CC: <span t-field="cb.cuenta_cliente"/> <strong t-field="cb.currency_id"/>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+
+							</div>
+							<div class="col-xs-4" style="margin:0px !important;padding:0px !important">
+								<table class="table table-bordered2" style="height: 150px!important">
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+													<div class="col-xs-6">
+														<strong class="text-uppercase ">
+															sub-total
+														</strong>
+													</div>
+													<div class="col-xs-6 text-right">
+														<span t-field="o.amount_untaxed" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xs-6">
+														<strong class="text-uppercase">
+															descuento
+														</strong>
+													</div>
+													<div class="col-xs-6 text-right">
+														<span t-field="o.amount_total_discount" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-xs-6">
+														<strong class="text-uppercase">
+															impuestos
+														</strong>
+													</div>
+													<div class="col-xs-6 text-right">
+														<span t-field="o.amount_tax" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+													</div>
+												</div>
+												<hr style="margin: 0px;padding: 0px;border-top: 1px solid;"/>
+												<div class="row">
+													<div class="col-xs-6">
+														<strong class="text-uppercase">
+															total
+														</strong>
+													</div>
+													<div class="col-xs-6 text-right">
+														<strong t-field="o.amount_total" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr class="text-center">
+											<td>
+												<span>
+													<a t-att-href="o.get_qr_url()" target="_blank">Ver XML en linea</a>
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+				    </div>
+				    <div class="footer" style="font-size: 14px;border-top:1px solid black;">
+						<!--style>
+							span, strong{
+								font-size:12px !important;
+							}
+
+
+							.table-bordered2 {
+								height: 100%;
+							}
+							.table-bordered2 {
+								border-top: none;
+							}
+							.table-bordered2 &gt; thead &gt; tr {
+								padding-bottom: 10px;
+							}
+							.table-bordered2 &gt; tbody &gt; tr &gt; td{
+								border: 1px solid #000;
+								border-left: 1px solid;
+								padding-top: 0px;
+								padding-bottom: 0px;
+								border-collapse: collapse;
+								border-radius: 1em;
+							}
+							.table-bordered2 &gt; thead &gt; tr &gt; th{
+								border: 1px solid #FFF;
+							}
+							.table-bordered2 &gt; thead &gt; tr &gt; th{
+								border-bottom: 1px solid  #000;
+							}
+							.text-right{
+								text-align: right;
+							}
+
+						</style-->
+
+						<div class="row">
+							<div class="col-xs-9">
+								<div class="row">
+									<div class="col-xs-12">
+										<table class="table table-bordered2" style="height: 150px!important">
+											<tr>
+												<td>
+													<span>Emitida conforme lo establecido en la resolución de Facturación Electrónica, N° DGT-R-48-2016  siete de octubre de
+dos mil dieciséis de la Dirección General de Tributación.
+													</span>
+													<br/>
+
+													<strong class="text-center">
+														Generada por: <a href="http://www.crfacturaelectronica.com/" target="_blank">www.crfacturaelectronica.com</a>
+													</strong>
+<br/><br/><span>Página </span><span class="page" /> de <span class="topage" />
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-3 text-right">
+								<img t-if="o.clave_envio_hacienda" t-att-src="'/report/barcode/QR/%s' % o.get_qr_url()" height="130" width="130"/>
+							</div>
+							<div class="col-xs-4">
+
+
+							</div>
+						</div>
+			    	</div>
+			  </div>
+
+		    </t>
+
+		</template>
+
+		<template id="report_account_invoice_facturaelectronica">
+		    <t t-call="report.html_container">
+		        <t t-foreach="docs" t-as="o">
+		            <t t-call="account_invoice_report_generico.report_account_invoice_facturaelectronica_document" t-lang="o.partner_id.lang"/>
+		        </t>
+		    </t>
+		</template>
+
+        <record id="account.account_invoices" model="ir.actions.report.xml">
+			<field name="report_name">account_invoice_report_generico.report_account_invoice_facturaelectronica</field>
+        </record>
+
+
+		<!--
+
+		Reporte de ventas sale.order
+
+		-->
+
+
+        <record id="account.account_invoices" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_euro"/>
+            <field name="attachment_use" eval="False"/>
+        </record>
+
+
+	</data>
+</openerp>

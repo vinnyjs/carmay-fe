@@ -1,0 +1,6 @@
+id,code,name
+cr_electronic_invoice.CodeTypeProduct_01,01,Código del producto del vendedor
+cr_electronic_invoice.CodeTypeProduct_02,02,Código del producto del comprador
+cr_electronic_invoice.CodeTypeProduct_03,03,Código del producto asignado por la industria
+cr_electronic_invoice.CodeTypeProduct_04,04,Código uso interno
+cr_electronic_invoice.CodeTypeProduct_99,99,Otros

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="action_download_comprobantes"
+            string="Descargar comprobantes"
+            model="account.invoice"
+            menu="True"
+            report_type="zip"
+            name="facturacion_hacienda.archivos_xml"
+        />
+
+    </data>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_stages,access_sale_stages,model_sale_stages,base.group_user,1,1,1,0
+access_sale_stage_history,access_sale_stage_history,model_sale_stage_history,base.group_user,1,1,1,0

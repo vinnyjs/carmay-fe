@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <template id="xml_beatify" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+              <script type="text/javascript" src="/facturacion_hacienda/static/src/js/ace_xml.js"></script>
+              <!--script type="text/javascript" src="/facturacion_hacienda/static/src/js/tour_hacienda.js"></script-->
+            </xpath>
+        </template>
+
+        <template id="visor_documentos">
+
+            <html style="height: 100%;">
+                <head>
+                    <meta charset="utf-8"/>
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+
+                    <title>Visor</title>
+                    <link type="image/x-icon" rel="shortcut icon" t-att-href="x_icon or '/web/static/src/img/favicon.ico'"/>
+
+                    <script type="text/javascript">
+                        var odoo = {
+                            csrf_token: "<t t-esc="request.csrf_token(None)"/>",
+                        };
+                    </script>
+
+                    <link rel="stylesheet"
+                        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+                    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+                    <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+                    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+
+                    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+                    <script>
+                        hljs.initHighlightingOnLoad();
+                        var height = window.innerHeight;
+                        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+                        window.onload = function(e){
+                            function hacerTodo(name){
+
+                                var code = document.getElementById('code' + name);
+
+                                function download(text, fileName, type) {
+                                  var a = document.getElementById("downloadFile" + name);
+                                  var file = new Blob([text], {type: type});
+                                  a.href = URL.createObjectURL(file);
+                                  a.download = fileName;
+                                }
+                                var url = window.location.toString();
+                                url = url.replace(window.location.origin, '');
+                                var fileName =  '506' + url.replace(window.location.origin,  '').split('/506')[1] + name;
+                                download(code.innerText, fileName.replace(".xml", "") + ".xml", 'text/plain');
+
+                                document.getElementById('xml' + name).style.height = (height -50) +'px';
+                                document.getElementById('pre' + name).style.height = (height - 80) +'px';
+                                if (isMobile) {
+                                    code.style.width = '610px';
+                                }
+
+                            }
+                            hacerTodo("");
+                            hacerTodo("-respuesta");
+                        }
+
+                    </script>
+
+                </head>
+                <body class="container">
+
+
+
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+
+
+                            <ul class="nav nav-tabs">
+                              <li class="active">
+                                  <a data-toggle="tab" href="#xml">Archivo XML</a>
+                              </li>
+                              <li t-if="respuestaXmlFile">
+                                  <a data-toggle="tab" href="#xml-respuesta">Respuesta XML</a>
+                              </li>
+                              <!--li><a data-toggle="tab" href="#pdf">Archivo PDF</a></li-->
+                            </ul>
+
+                            <div class="tab-content">
+                              <div id="xml" class="tab-pane fade in active embed-responsive">
+                                    <a href="" id="downloadFile" class="btn btn-success">Descargar</a>
+                                    <pre class="text-left" id="pre" style="overflow: auto"><code class="xml" id="code"><t t-esc="xmlFile"/></code></pre>
+                              </div>
+                              <div id="xml-respuesta" class="tab-pane fade in active embed-responsive" t-if="respuestaXmlFile">
+                                    <a href="" id="downloadFile-respuesta" class="btn btn-success">Descargar</a>
+                                    <pre class="text-left" id="pre-respuesta" style="overflow: auto"><code class="xml" id="code-respuesta"><t t-esc="respuestaXmlFile"/></code></pre>
+                              </div>
+                              <!--div id="pdf" class="tab-pane fade in embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" t-att-src="pdf"></iframe>
+                              </div-->
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </body>
+            </html>
+
+        </template>
+
+    </data>
+</odoo>

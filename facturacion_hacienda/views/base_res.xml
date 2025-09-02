@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_company_form_inherit" model="ir.ui.view">
+			<field name="name">res.company.form.inherit</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_form"/>
+			<field name="arch" type="xml">
+
+				<!--INICIO HERENCIA BRYAN-->
+
+				<page position="after">
+                    <page string="Datos Hacienda">
+						<group>
+							<field name="codigo_ids" nolabel="1" required="1">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</group>
+                        <group>
+                            <field name="usuario_hacienda" required="1"/>
+                            <field name="clave_hacienda" password="True"  required="1"/>
+                            <field name="fname_llave_hacienda" invisible="1"/>
+                            <field name="llave_hacienda" filename="fname_llave_hacienda" required="1"/>
+                            <field name="clave_llave" required="1"/>
+                            <field name="test"/>
+                            <button name="get_token" type="object" string="Obtener token"/><br/>
+                        </group>
+                        <group>
+                            <field name="token_hacienda" readonly="1" attrs="{'invisible': [('token_hacienda', '=', False)]}"/>
+                        </group>
+                    </page>
+                    <page string="Cuentas Bancarias">
+						<field name="bank_ids" context="{'default_partner_id': partner_id}"/>
+                    </page>
+                </page>
+
+				<!--FIN HERENCIA BRYAN-->
+
+
+				<xpath expr="/form/*" position="before">
+					<header>
+						<button type="object" name="go_to_account_conf" string="Configurar datos de la compañia"/>
+					</header>
+				</xpath>
+
+				<xpath expr="//sheet[1]" position="after">
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+				</xpath>
+
+
+				<field name="company_registry" position="replace">
+					<field name="ref"/>
+				</field>
+
+				<field name="state_id" position="replace"/>
+				<field name="country_id" position="replace"/>
+				<field name="partner_id" position="after">
+					<field name="commercial_name"/>
+					<field name="country_id" />
+					<field name="state_id"/>
+					<field name="county_id" domain="[('state_id', '=', state_id)]" options="{'no_create': 1, 'no_create_edit': 1}"/>
+					<field name="district_id" domain="[('county_id', '=', county_id)]" options="{'no_create': 1, 'no_create_edit': 1}"/>
+					<field name="neighborhood_id" domain="[('district_id', '=', district_id)]" options="{'no_create': 1, 'no_create_edit': 1}"/>
+				</field>
+				<field name="vat" position="replace"/>
+				<field name="fax" position="before">
+					<field name="fax_code"/>
+				</field>
+
+				<label for="street" position="attributes">
+					<attribute name="string">Otras señas</attribute>
+					<attribute name="required">1</attribute>
+				</label>
+
+				<field name="country_id" position="attributes">
+					<attribute name="options">{"no_create": 1, "no_create_edit": 1}</attribute>
+				</field>
+				<field name="state_id" position="attributes">
+					<attribute name="options">{"no_create": 1, "no_create_edit": 1}</attribute>
+				</field>
+
+				<field name="phone" position="before">
+					<field name="phone_code"/>
+				</field>
+
+				<field name="email" position="after">
+					<field name="identification_id" options="{'no_create': 1, 'no_create_edit': 1}"/>
+					<!--field name="vat"/-->
+				</field>
+
+				<field name="email" position="attributes">
+					<attribute name="required">1</attribute>
+				</field>
+
+
+			</field>
+		</record>
+
+		<record id="view_partner_form_inherit" model="ir.ui.view">
+			<field name="name">res.partner.form.inherit</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+			<field name="arch" type="xml">
+
+
+				<field name="ref" position="replace"/>
+				<field name="state_id" position="replace"/>
+				<field name="country_id" position="replace"/>
+
+				<field name="type" position="before">
+					<field name="identification_id" options="{'no_create': 1, 'no_create_edit': 1}"/>
+					<field name="ref" string="Cédula" required="1"/>
+					<field name="country_id" options="{'no_create': 1, 'no_create_edit': 1}"/>
+					<field name="state_id" string="Provincia" options="{'no_create': 1, 'no_create_edit': 1}" attrs="{'required': [('country_id', '!=', False)]}"/>
+					<field name="county_id" domain="[('state_id', '=', state_id)]" options="{'no_create': 1, 'no_create_edit': 1}" attrs="{'required': [('country_id', '!=', False)]}"/>
+					<field name="district_id" domain="[('county_id', '=', county_id)]" options="{'no_create': 1, 'no_create_edit': 1}" attrs="{'required': [('country_id', '!=', False)]}"/>
+					<field name="neighborhood_id" domain="[('district_id', '=', district_id)]" options="{'no_create': 1, 'no_create_edit': 1}" attrs="{'required': [('country_id', '!=', False)]}"/>
+				</field>
+
+				<label for="street" position="attributes">
+					<attribute name="string">Otras señas</attribute>
+					<attribute name="attrs">{'required': [('country_id', '!=', False)]}</attribute>
+				</label>
+
+				<field name="website" position="replace"/>
+				<field name="category_id" position="replace"/>
+
+				<field name="phone" position="before">
+					<field name="commercial_name"/>
+					<field name="phone_code"/>
+				</field>
+
+
+				<field name="fax" position="before">
+					<field name="fax_code"/>
+				</field>
+				<field name="fax" position="after">
+					<field name="website" />
+					<field name="category_id" widget="many2many_tags"/>
+				</field>
+
+				<field name="property_payment_term_id" position="before">
+					<field name="payment_methods_id" options="{'no_create': 1, 'no_create_edit': 1}" required="0"/>
+				</field>
+
+
+			</field>
+		</record>
+
+
+		<record id="view_partner_bank_form_inherit" model="ir.ui.view">
+			<field name="name">res.partner.bank.form.inherit</field>
+			<field name="model">res.partner.bank</field>
+			<field name="inherit_id" ref="base.view_partner_bank_form"/>
+			<field name="arch" type="xml">
+
+				<field name="acc_number" position="after">
+					<field name="cuenta_cliente"/>
+				</field>
+
+			</field>
+		</record>
+
+		<record id="view_partner_bank_tree_inherit" model="ir.ui.view">
+			<field name="name">res.partner.bank.tree.inherit</field>
+			<field name="model">res.partner.bank</field>
+			<field name="inherit_id" ref="base.view_partner_bank_tree"/>
+			<field name="arch" type="xml">
+
+				<field name="acc_number" position="after">
+					<field name="cuenta_cliente"/>
+				</field>
+
+			</field>
+		</record>
+
+    </data>
+</odoo>

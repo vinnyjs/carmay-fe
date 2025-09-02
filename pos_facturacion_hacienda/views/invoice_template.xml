@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<odoo>
+    <data>
+
+        <template id="report_invoice_inherit_demo" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//h2" position="before">
+                <h3>
+                    <img  t-if="o.clave_envio_hacienda" t-att-src="'/report/barcode/QR/%s' % o.clave_envio_hacienda" height="200" width="200"/>
+                </h3>
+            </xpath>
+            <xpath expr="//h2" position="after">
+                <h3>
+                    Documento electronico: <span t-field="o.clave_envio_hacienda"/>
+                </h3>
+            </xpath>
+
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="account_invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.only_exportacion</field>
+            <field name="model">account.invoice</field>
+            <field name="groups_id" eval="[(4, ref('account_invoice_report_exportacion.grupo_exportacion'))]"/>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//notebook" position="inside">
+                        <page string="Información de Exportación">
+                            <group>
+                                <group>
+                                    <field name="export_id"/>
+                                    <field name="consigned_to"/>
+                                    <field name="sold_to"/>
+
+                                </group>
+                                <group>
+                                    <field name="shipping_line"/>
+                                    <field name="vessel"/>
+                                    <field name="voyage"/>
+                                    <field name="bill_of_lading"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="container"/>
+                                    <field name="seal"/>
+                                </group>
+                                <group>
+                                    <field name="country_of_origin"/>
+                                    <field name="port_of_loading"/>
+                                    <field name="country_of_destination"/>
+                                    <field name="point_of_entry"/>
+                                    <field name="purchase_order"/>
+                                </group>
+                            </group>
+                        </page>
+                    </xpath>
+                    <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
+                        <field name="pack_type"/>
+                        <field name="gross_weight"/>
+                        <field name="net_weight"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+    </data>
+</openerp>

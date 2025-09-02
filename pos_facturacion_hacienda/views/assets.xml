@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <template id="xml_beatify" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+              <script type="text/javascript" src="/facturacion_hacienda/static/src/js/ace_xml.js"></script>
+              <script type="text/javascript" src="/facturacion_hacienda/static/src/js/tour_hacienda.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

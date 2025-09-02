@@ -1,0 +1,88 @@
+id,code,name
+facturacion_hacienda.commercial_measure_sp,Sp,Servicios Profesionales
+facturacion_hacienda.commercial_measure_m,m,Metro
+facturacion_hacienda.commercial_measure_kg,kg,Kilogramo
+facturacion_hacienda.commercial_measure_s,s,Segundo
+facturacion_hacienda.commercial_measure_A,A,Ampere
+facturacion_hacienda.commercial_measure_K,K,Kelvin
+facturacion_hacienda.commercial_measure_mol,mol,Mol
+facturacion_hacienda.commercial_measure_cd,cd,Candela
+facturacion_hacienda.commercial_measure_m2,m²,metro cuadrado
+facturacion_hacienda.commercial_measure_m3,m³,metro cúbico
+facturacion_hacienda.commercial_measure_m_s,m/s,metro por segundo
+facturacion_hacienda.commercial_measure_m_s_2,m/s²,metro por segundo cuadrado
+facturacion_hacienda.commercial_measure_1_m,1/m,1 por metro
+facturacion_hacienda.commercial_measure_kg_m_3,kg/m³,kilogramo por metro cúbico
+facturacion_hacienda.commercial_measure_A_m_2,A/m²,ampere por metro cuadrado
+facturacion_hacienda.commercial_measure_A_m,A/m,ampere por metro
+facturacion_hacienda.commercial_measure_mol_m3,mol/m³,mol por metro cúbico
+facturacion_hacienda.commercial_measure_cd_m2,cd/m²,candela por metro cuadrado
+facturacion_hacienda.commercial_measure_1,1,uno (indice de refracción)
+facturacion_hacienda.commercial_measure_rad,rad,radián
+facturacion_hacienda.commercial_measure_sr,sr,estereorradián
+facturacion_hacienda.commercial_measure_hz,Hz,hertz
+facturacion_hacienda.commercial_measure_n,N,newton
+facturacion_hacienda.commercial_measure_pa,Pa,pascal
+facturacion_hacienda.commercial_measure_j,J,Joule
+facturacion_hacienda.commercial_measure_w,W,Watt
+facturacion_hacienda.commercial_measure_c,C,coulomb
+facturacion_hacienda.commercial_measure_v,V,volt
+facturacion_hacienda.commercial_measure_f,F,farad
+facturacion_hacienda.commercial_measure_ohm,Ω,ohm
+facturacion_hacienda.commercial_measure_siemens,S,siemens
+facturacion_hacienda.commercial_measure_wb,Wb,weber
+facturacion_hacienda.commercial_measure_tesla,T,tesla
+facturacion_hacienda.commercial_measure_h,H,henry
+facturacion_hacienda.commercial_measure_celsius,°C,grado Celsius
+facturacion_hacienda.commercial_measure_lm,lm,lumen
+facturacion_hacienda.commercial_measure_lx,lx,lux
+facturacion_hacienda.commercial_measure_bq,Bq,Becquerel
+facturacion_hacienda.commercial_measure_gy,Gy,gray
+facturacion_hacienda.commercial_measure_sv,Sv,sievert
+facturacion_hacienda.commercial_measure_kat,kat,katal
+facturacion_hacienda.commercial_measure_pas,Pa·s,pascal segundo
+facturacion_hacienda.commercial_measure_n_m,N·m,newton metro
+facturacion_hacienda.commercial_measure_n_metro,N/m,newton por metro
+facturacion_hacienda.commercial_measure_rad_s,rad/s,radián por segundo
+facturacion_hacienda.commercial_measure_rad_s2,rad/s²,radián por segundo cuadrado
+facturacion_hacienda.commercial_measure_w_m2,W/m²,watt por metro cuadrado
+facturacion_hacienda.commercial_measure_j_k,J/K,joule por kelvin
+facturacion_hacienda.commercial_measure_j_kg_k,J/(kg·K),joule por kilogramo kelvin
+facturacion_hacienda.commercial_measure_j_kg,J/kg,joule por kilogramo
+facturacion_hacienda.commercial_measure_w__m_k,W/(m·K),watt por metro kevin
+facturacion_hacienda.commercial_measure_j_m3,J/m³,joule por metro cúbico
+facturacion_hacienda.commercial_measure_v_m,V/m,volt por metro
+facturacion_hacienda.commercial_measure_c_m3,C/m³,coulomb por metro cúbico
+facturacion_hacienda.commercial_measure_c_m2,C/m²,coulomb por metro cuadrado
+facturacion_hacienda.commercial_measure_f_m,F/m,farad por metro
+facturacion_hacienda.commercial_measure_h_m,H/m,henry por metro
+facturacion_hacienda.commercial_measure_j_mol,J/mol,joule por mol
+facturacion_hacienda.commercial_measure_j_mol2,J/(mol·K),joule por mol kelvin
+facturacion_hacienda.commercial_measure_c_kg,C/kg,coulomb por kilogramo
+facturacion_hacienda.commercial_measure_gy_s,Gy/s,gray por segundo
+facturacion_hacienda.commercial_measure_w_sr,W/sr,watt por estereorradián
+facturacion_hacienda.commercial_measure_w_m₂,W/(m²·sr),watt por metro cuadrado estereorradián
+facturacion_hacienda.commercial_measure_kat_m₃,kat/m³,katal por metro cúbico
+facturacion_hacienda.commercial_measure_min,min,minuto
+facturacion_hacienda.commercial_measure_hora,h,hora
+facturacion_hacienda.commercial_measure_d,d,día
+facturacion_hacienda.commercial_measure_grado,º,grado
+facturacion_hacienda.commercial_measure_minuto,´,minuto
+facturacion_hacienda.commercial_measure_segundo,´´,segundo
+facturacion_hacienda.commercial_measure_l,L,litro
+facturacion_hacienda.commercial_measure_t,t,tonelada
+facturacion_hacienda.commercial_measure_np,Np,neper
+facturacion_hacienda.commercial_measure_B,B,bel
+facturacion_hacienda.commercial_measure_ev,eV,electronvolt
+facturacion_hacienda.commercial_measure_u,u,unidad de masa atómica unificada
+facturacion_hacienda.commercial_measure_ua,ua,unidad astronómica
+facturacion_hacienda.commercial_measure_unid,Unid,unidad
+facturacion_hacienda.commercial_measure_gal,Gal,galón
+facturacion_hacienda.commercial_measure_g,g,gramo
+facturacion_hacienda.commercial_measure_km,Km,kilometro
+facturacion_hacienda.commercial_measure_ln,ln,pulgada
+facturacion_hacienda.commercial_measure_cm,cm,centimetro
+facturacion_hacienda.commercial_measure_ml,mL,mililitro
+facturacion_hacienda.commercial_measure_mm,mm,milimetro
+facturacion_hacienda.commercial_measure_oz,Oz,onzas
+facturacion_hacienda.commercial_measure_otros,Otros,Otros

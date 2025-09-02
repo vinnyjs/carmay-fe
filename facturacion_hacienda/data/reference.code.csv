@@ -1,0 +1,7 @@
+id,code,name,active
+cr_electronic_invoice.ReferenceCode_1,01,Anula Documento de Referencia,true
+cr_electronic_invoice.ReferenceCode_2,02,Corrige texto de referencia,true
+cr_electronic_invoice.ReferenceCode_3,03,Corrige monto,true
+cr_electronic_invoice.ReferenceCode_4,04,Referencia a otro documento,true
+cr_electronic_invoice.ReferenceCode_5,05,Sustituye comprobante provisional por contingencia,true
+cr_electronic_invoice.ReferenceCode_99,99,Otros,true

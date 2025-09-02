@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+ <t t-extend="ListView.buttons">
+       <t  t-jquery=".o_list_buttons" t-operation="before">
+           <div t-if="!widget.no_leaf and widget.options.action_buttons !== false">
+               <div class="export-buttons">
+                    <a class="btn btn-primary btn-sm oe_bold oe_list_button_import_pdf"
+                        id="button_export_pdf"
+                        href="#">
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&amp;nbsp;PDF</a>
+                    o
+                    <a class="btn btn-primary btn-sm oe_bold oe_list_button_import_excel"
+                        id="button_export_excel"
+                        href="#">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>&amp;nbsp;Excel</a>
+               </div>
+               <br/>
+           </div>
+
+
+       </t>
+ </t>
+
+</templates>

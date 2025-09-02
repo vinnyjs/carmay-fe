@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="AceXml">
+            <textarea class="ace-view-xml" readonly="1"/>
+    </t>
+
+
+    <t t-name="Cambio">
+        <div class="rates text-center" style="background-color: #FFF; border: 1px solid #7c7bad; border-radius: 5px;">
+            <strong>Tipo de Cambio</strong>
+            <br/>
+            <div id="cambio"/>
+            <div id="fecha_cambio" style="font-size: 8px;font-weight: bold;"/>
+        </div>
+        <p></p>
+    </t>
+
+    <t t-extend="ListView.buttons">
+       <t t-jquery=".o_list_buttons" t-operation="before">
+           <t t-call="Cambio"/>
+       </t>
+    </t>
+    <t t-extend="FormView.buttons">
+       <t t-jquery=".o_form_buttons_view" t-operation="before">
+          <t t-call="Cambio"/>
+       </t>
+    </t>
+
+</templates>

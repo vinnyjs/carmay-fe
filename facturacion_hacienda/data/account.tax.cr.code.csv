@@ -1,0 +1,15 @@
+id,code,name,active
+__export__.InvoiceTaxElectronic_001,00,Exento(No usar),1
+__export__.InvoiceTaxElectronic_1,01,Impuesto al Valor Agregado,1
+__export__.InvoiceTaxElectronic_2,02,Impuesto Selectivo de Consumo,1
+__export__.InvoiceTaxElectronic_3,03,Impuesto Único a los combustibles,1
+__export__.InvoiceTaxElectronic_4,04,Impuesto específico de Bebidas Alcohólicas,1
+__export__.InvoiceTaxElectronic_5,05,Impuesto Específico sobre las bebidas envasadas sin contenido alcohólico y jabones de tocador,1
+__export__.InvoiceTaxElectronic_6,06,Impuesto a los productos de Tabaco,1
+__export__.InvoiceTaxElectronic_7,07,IVA(Calculo Especial),1
+__export__.InvoiceTaxElectronic_8,08,IVA Régimen de Bienes Usados (Factor),1
+__export__.InvoiceTaxElectronic_9,09,Impuesto General sobre las Ventas Compras Autorizadas,0
+__export__.InvoiceTaxElectronic_10,10,Impuesto General sobre las ventas Instituciones Públicas y otros Organismos,0
+__export__.InvoiceTaxElectronic_11,11,Impuesto Selectivo de Consumo Compras Autorizadas,0
+__export__.InvoiceTaxElectronic_12,12,Impuesto Específico al Cemento,1
+__export__.InvoiceTaxElectronic_98,99,Otros,1

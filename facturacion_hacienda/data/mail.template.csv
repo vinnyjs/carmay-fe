@@ -1,0 +1,2 @@
+id,email_from,reply_to
+"account.email_template_edi_invoice","${'%s &lt;%s&gt;' % (object.user_id.name, object.env['res.users'].sudo().browse(1).email)|safe}","${(object.user_id.email and '%s &lt;%s&gt;' % (object.user_id.name, object.user_id.email) or '')|safe}"

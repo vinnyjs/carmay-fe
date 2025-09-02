@@ -1,0 +1,10 @@
+id,code,name,active
+cr_electronic_invoice.ReferenceDocument_1,01,Factura electrónica,true
+cr_electronic_invoice.ReferenceDocument_2,02,Nota de débito electrónica,true
+cr_electronic_invoice.ReferenceDocument_3,03,Nota de crédito electrónica,true
+cr_electronic_invoice.ReferenceDocument_4,04,Tiquete electrónico,true
+cr_electronic_invoice.ReferenceDocument_5,05,Nota de despacho,true
+cr_electronic_invoice.ReferenceDocument_6,06,Contrato,true
+cr_electronic_invoice.ReferenceDocument_7,07,Procedimiento,true
+cr_electronic_invoice.ReferenceDocument_8,08,Comprobante emitido en contingencia,true
+cr_electronic_invoice.ReferenceDocument_99,99,Otros,true

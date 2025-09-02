@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <template id="project_journal_items_id">
+            <t t-call="report.external_layout">
+                 <div class="page">
+                     <t t-foreach="docs" t-as="asiento">
+
+                         <div>
+                             <div class="row">
+                                <div class="col-xs-6">
+                                    <strong>Número: </strong><span t-field="asiento.name"/>
+                                    <br/>
+                                    <strong>Referencia: </strong><span t-field="asiento.ref"/>
+                                </div>
+                                <div class="col-xs-6">
+                                    <strong>Diario: </strong><span t-field="asiento.journal_id"/>
+                                    <br/>
+                                    <strong>Fecha: </strong><span t-field="asiento.date"/>
+                                </div>
+                             </div>
+                             <br/>
+                             <h3>Lineas de Asiento</h3>
+                             <table class="table table-responsive">
+                                <tr style="border: 2px solid black;">
+                                    <th>Fecha</th>
+                                    <th>Descripción</th>
+                                    <th>Cuenta</th>
+                                    <th>Debe</th>
+                                    <th>Haber</th>
+
+                                </tr>
+                                <t t-foreach="asiento.line_ids" t-as="line">
+                                    <tr style="border: 2px solid black;">
+
+                                        <td><span t-field="line.date_maturity"/></td>
+                                        <td><span t-field="line.name"/></td>
+                                        <td><span t-field="line.account_id" /></td>
+                                        <td><span t-field="line.debit" /></td>
+                                        <td><span t-field="line.credit" /></td>
+
+                                    </tr>
+                                </t>
+                             </table>
+                         </div>
+                     </t>
+
+                </div>
+              </t>
+        </template>
+        
+    </data>
+</odoo>

@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="account_invoice_codigo">
+            <field name="name">account.invoice.codigo</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="replace">
+                            <field name="payment_term_id" attrs="{'invisible': [('partner_id','=',6350)]}" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='date_due']" position="replace"/>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                            <field name="date_due" attrs="{'invisible': [('partner_id','=',6350)]}" required="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <!--record model="ir.ui.view" id="account_invoice_codigo_filter">
+            <field name="name">account.invoice.codigo</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='journal_id']" position="after">
+                            <field name="codigo" />
+                            <field name="nivel_id" />
+                </xpath>
+                <xpath expr="//filter[@name='status']" position="before">
+                            <filter name="nivel_id" string="Nivel"  context="{'group_by':'nivel_id'}"/>
+                </xpath>
+
+            </field>
+        </record-->
+
+
+        <!--record model="ir.ui.view" id="res_partner_codigo">
+            <field name="name">res.partner.codigo</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                            <field name="codigo" attrs="{'invisible': [('supplier', '=', True)], 'required': [('customer', '=', True)]}"/>
+                            <field name="nivel_id" attrs="{'invisible': [('supplier', '=', True)], 'required': [('customer', '=', True)]}"/>
+                </xpath>
+            </field>
+        </record-->
+
+
+
+        <record model="ir.ui.view" id="account_payment_inherit">
+            <field name="name">account.payment.wizard</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='communication']" position="attributes">
+                         <attribute name="string">Referencia</attribute>
+                         <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_date']" position="attributes">
+                         <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='amount']" position="attributes">
+                         <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_difference_handling']" position="attributes">
+                         <attribute name="attrs">{'invisible': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_difference']" position="attributes">
+                         <attribute name="attrs">{'invisible': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//label[@for='payment_difference']" position="attributes">
+                         <attribute name="attrs">{'invisible': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='journal_id']" position="attributes">
+                         <attribute name="string">Método de Pago</attribute>
+                         <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='communication']" position="after">
+                         <field name="id" invisible="1"/>
+                         <field name="invoice_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='post']" position="attributes">
+                         <attribute name="string">Pagar</attribute>
+                         <attribute name="invisible">{'invisible': [('id','!=',False)]}</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='post']" position="after">
+                    <button string="Pagar" name="post" type="object" class="btn-primary"  attrs="{'invisible': [('id', '!=', False)]}"/>
+                    <button name="%(recibo_factura.action_report_invoice_receipt)d" string="Imprimir" icon="fa-print" type="action" attrs="{'invisible': [('id', '=', False)]}" context="{'active_id': invoice_id, 'original_ids': [invoice_id], 'direct_print': 1, 'payment_id': id}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="account_payment_searchinherit">
+            <field name="name">account.payment.wizard</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//filter[@groups='base.group_multi_currency']" position="after">
+                    <filter string="Fecha Creación" domain="[]" context="{'group_by': 'create_date:day'}"/>
+                    <filter string="Fecha de Pago" domain="[]" context="{'group_by': 'payment_date:day'}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.ui.view" id="account_invoice_searchinherit">
+            <field name="name">account.invoice.search</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group[@expand='0']" position="inside">
+                    <filter string="Fecha Creación sistema" domain="[]" context="{'group_by': 'create_date:day'}"/>
+                    <filter string="Fecha de factura(dia)" domain="[]" context="{'group_by': 'date_invoice:day'}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+
+	</data>
+</openerp>
