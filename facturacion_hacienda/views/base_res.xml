@@ -13,10 +13,11 @@
 				<page position="after">
                     <page string="Datos Hacienda">
 						<group>
+                            <button name="get_information_from_mh" type="object" string="Obtener info MH"/>
 							<field name="codigo_ids" nolabel="1" required="1">
 								<tree>
-									<field name="code"/>
-									<field name="name"/>
+									<field name="sequence"/>
+									<field name="actividad_id"/>
 								</tree>
 							</field>
 						</group>

@@ -21,12 +21,11 @@
 
 from odoo import models, fields, api
 import contextlib
-import OpenSSL.crypto
 import os
 import requests
 import ssl
 import tempfile
-import simplejson
+import json
 from odoo.exceptions import UserError
 
 class PosOrder(models.Model):

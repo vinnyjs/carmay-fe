@@ -45,6 +45,7 @@ class ProductElectronic(models.Model):
     commercial_measurement = fields.Char(string="Unidad de Medida Comercial", required=False, )
     code_type_id = fields.Many2one(comodel_name="code.type.product", string="Tipo de código", required=False,
                                    default=_default_code_type_id)
+    codigo_cabys = fields.Char(related='x_codigo_cabys')
 
     @api.model
     def create(self, vals):

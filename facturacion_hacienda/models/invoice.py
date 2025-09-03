@@ -30,7 +30,7 @@ import base64
 import contextlib
 import os
 import requests
-import simplejson
+import json
 import threading
 from odoo.tools.safe_eval import safe_eval
 import pytz
@@ -39,7 +39,13 @@ import re
 from lxml import etree as ET
 from dateutil.parser import parse
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
-from documento_xml import DocumentoXml
+from lxml import etree
+from ..xades.context2 import XAdESContext2, PolicyId2, create_xades_epes_signature
+from cryptography.hazmat.primitives.serialization.pkcs12 import load_key_and_certificates
+from cryptography.hazmat.primitives.serialization import pkcs12
+
+
+from documento_xml import InvoiceXMLGenerator
 import time
 import shutil
 from odoo.addons.account_report_tools.tools import tools_amount_to_text as amt_text
@@ -513,7 +519,7 @@ class InvoiceElectronic(models.Model):
         headers = {'Content-type': 'application/json;charset=UTF-8',
                    'Authorization': token}
 
-        json2send = simplejson.dumps(values_to_send)
+        json2send = json.dumps(values_to_send)
 
         values2write = {
             'status_hacienda': 'generado',
@@ -693,11 +699,48 @@ class InvoiceElectronic(models.Model):
             if not self.xml_supplier_approval and not self.regimen_simplificado:
                 return True
 
-        xml_doc = DocumentoXml(self, tipo_doc, fecha, result['resumen'])
-        xml_firmado = xml_doc.generate_xml()
-        self.xml_file_hacienda = xml_firmado.replace("&", "&amp;")
-        archivo_firmado = self.firmar()
-        return self.enviar_factura_hacienda(archivo_firmado, xml_doc.get_Clave(), fecha)
+        template_values = self._prepare_invoice_values()
+
+        xml_generator = InvoiceXMLGenerator(template_values)
+        clave, consecutivo = xml_generator.generarClaveFactura()
+        self.write({'clave_envio_hacienda': clave,
+                })
+        content = xml_generator.generate_xml()
+        signed = self.firmar(content)
+
+        return self.enviar_factura_hacienda(signed, clave, fecha)
+
+    def check_if_ticket(self):
+        invoice = self
+        if (invoice.partner_id.cliente_generico or not invoice.partner_id.ref or invoice.partner_id.ref in ['000000000','0000000000', '111111111', '1111111111']
+                  or invoice.partner_id.identification_id.code == '05'):
+            return True
+
+    def preparar_firmar(self):
+        archivo_xml = False
+        archivo_p12 = False
+
+        with self.generarP12Temp() as a_p12:
+            archivo_p12 = a_p12
+        return archivo_p12, self.company_id.clave_llave
+
+    def firmar(self, xml2firmar):
+        cert, password = self.preparar_firmar()
+        policy_id = 'https://cdn.comprobanteselectronicos.go.cr/xml-schemas/Resoluci%C3%B3n_General_sobre_disposiciones_t%C3%A9cnicas_comprobantes_electr%C3%B3nicos_para_efectos_tributarios.pdf'
+        root = etree.fromstring(xml2firmar)
+        signature = create_xades_epes_signature()
+        policy = PolicyId2()
+        policy.id = policy_id
+        root.append(signature)
+        ctx = XAdESContext2(policy)
+        private_key, cert, ca_certificates = load_key_and_certificates(base64.decodestring(self.company_id.llave_hacienda), password.encode('utf-8'))
+        # Directly Assign private key and certificate.
+        ctx.private_key = private_key
+        ctx.x509 = cert
+        ctx.ca_certificates = ca_certificates or []
+        ctx.sign(signature)
+
+        return etree.tostring(root, encoding='UTF-8', method='xml', xml_declaration=True, with_tail=False)
 
     @api.multi
     def send_xml(self):
@@ -852,6 +895,24 @@ class Invoice(models.Model):
     actividad_id = fields.Many2one('codigo.actividad', 'Código de actividad', default=_get_default_actividad)
     correo_enviado = fields.Datetime('Fecha de envío de correo', copy=False, default=False)
     # se usara en caso que exista contingencia
+    receiver_activity_ids = fields.Many2many('codigo.actividad', compute='_compute_receiver_activity_ids', string='Actividades registradas', store=False)
+    receiver_activity_id = fields.Many2one('codigo.actividad', 'Actividad del receptor')
+
+
+    @api.depends('partner_id')
+    def _compute_receiver_activity_ids(self):
+        for record in self:
+            if record.partner_id:
+                if record.partner_id.receiver_activity_ids:
+                    record.receiver_activity_ids = record.partner_id.receiver_activity_ids.mapped('actividad_id')
+                    if not record.receiver_activity_id or record.partner_id.id != self._origin.partner_id.id:
+                        record.receiver_activity_id = record.receiver_activity_ids and record.receiver_activity_ids[0].id or False
+                else:
+                    record.receiver_activity_ids = False
+                    record.receiver_activity_id = False
+            else:
+                record.receiver_activity_ids = False
+                record.receiver_activity_id = False
 
     @api.depends('state', 'status_hacienda')
     def _compute_mostrar_boton(self):
@@ -1482,7 +1543,7 @@ class Invoice(models.Model):
         headers = {'Content-type': 'application/json;charset=UTF-8',
                    'Authorization': token}
 
-        json2send = simplejson.dumps(values_to_send)
+        json2send = json.dumps(values_to_send)
 
         values2write = {
             'status_hacienda': 'generado',
@@ -1557,7 +1618,7 @@ class Invoice(models.Model):
             t_p12.close()
             yield t_p12.name
 
-    def firmar(self):
+    def firmar_old(self):
         archivo_xml = False
         archivo_p12 = False
 

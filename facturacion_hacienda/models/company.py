@@ -21,12 +21,11 @@
 
 from odoo import models, fields, api
 import contextlib
-import OpenSSL.crypto
 import os
 import requests
 import ssl
 import tempfile
-import simplejson
+import json
 from odoo.exceptions import UserError
 
 urls = {
@@ -38,6 +37,59 @@ urls = {
     'STAGING_AUTH_URL': "https://idp.comprobanteselectronicos.go.cr/auth/realms/rut-stag/protocol/openid-connect/token",
     'STAGING_CLIENT_ID': "api-stag"
 }
+
+
+def get_information_from_mh(self):
+    # Consulta en el Ministerio de Hacienda
+    # https://api.hacienda.go.cr/fe/ae?identificacion=<identificacion>
+    values2update = {}
+    for partner in self:
+        if not partner.vat or len(partner.vat) < 9:
+            raise UserError('Para consultar en el Ministerio de Hacienda, debe de tener número de identificación.')
+        data = requests.get(
+            'https://api.hacienda.go.cr/fe/ae?identificacion=%s' % (partner.vat,), timeout=5)
+        # check if timeout or other error
+        if data.status_code != 200:
+            data = requests.get(
+                'https://apis.gometa.org/cedulas/%s' % (partner.vat,), timeout=5)
+            if data.status_code != 200:
+                raise UserError('No se pudo obtener información del Ministerio de Hacienda, error: %s' % (data.text,))
+        result = data.json()
+        if 'tipoIdentificacion' in result:
+            identification_type = self.env['identification.type'].search(
+                [('code', '=', result['tipoIdentificacion'])], limit=1)
+            if identification_type:
+                values2update['identification_id'] = identification_type.id
+        if 'actividades' in result:
+            values2update['receiver_activity_ids'] = [(5, 0, 0)]
+            for idx, act in enumerate(result.get('actividades', [])):
+                if act['estado'] != 'A':
+                    continue
+                if act['codigo'].startswith('0'):
+                    act['codigo'] = act['codigo'][1:]
+                actividad = self.env['codigo.actividad'].search([('code', 'ilike', act['codigo'])], limit=1)
+                if actividad:
+                    values2update['receiver_activity_ids'].append((0, 0, {
+                        'actividad_id': actividad.id,
+                        'sequence': idx + 1
+                    }))
+        partner.write(values2update)
+
+
+class CodigoActividadOrdenados(models.Model):
+    _name = 'codigo.actividad.ordenados'
+    _order = 'sequence'
+
+    sequence = fields.Integer('Secuencia', required=True)
+    actividad_id = fields.Many2one('codigo.actividad', 'Código de actividad', required=True)
+    company_id = fields.Many2one('res.company', 'Compañía', required=False)
+    partner_id = fields.Many2one('res.partner', 'Compañía', required=False)
+
+    _sql_constraints = [
+        ('sequence_uniq', 'unique(actividad_id, company_id)', 'La actividad ya fue asignada a la compañía'),
+        ('partner_uniq', 'unique(actividad_id, partner_id)', 'La actividad ya fue asignada al cliente'),
+    ]
+
 class CodigoActividad(models.Model):
     _name = 'codigo.actividad'
 
@@ -74,7 +126,11 @@ class ResCompany(models.Model):
 
     test = fields.Boolean('Test?', help='Marque esta opción en caso que necesite solamente hacer pruebas')
     tipo_url = fields.Char(string='Tipo URL', compute='_compute_tipo_url', store=True)
-    codigo_ids = fields.Many2many('codigo.actividad', string='Codigos de actividad')
+    codigo_ids = fields.One2many('codigo.actividad.ordenados', 'company_id', 'Códigos de actividad')
+    cod_proveedor_fe = fields.Char('Código proveedor FE', help='Código de proveedor para Factura Electrónica')
+
+    def get_information_from_mh(self):
+        return get_information_from_mh(self)
 
     @api.depends('test')
     def _compute_tipo_url(self):
@@ -109,3 +165,10 @@ class ResCompany(models.Model):
             pass #raise UserError("Hubo un error al obtener el token ")
 
 ResCompany()
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    def get_information_from_mh(self):
+        return get_information_from_mh(self)
+

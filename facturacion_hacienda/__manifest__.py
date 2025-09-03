@@ -61,7 +61,7 @@
     ],
     'external_dependencies': {
         'python': [
-            'yattag' #sudo -H pip install yattag
+            #'yattag' #sudo -H pip install yattag
         ],
     },
     'qweb': ["static/src/xml/ace.xml"],

@@ -242,6 +242,8 @@ class PartnerElectronic(ValidationData, models.Model):
     payment_methods_id = fields.Many2one(comodel_name="payment.methods", string="Métodos de Pago" )
     correo_envio_fe = fields.Char('Correo para envio de FE')
     cliente_generico = fields.Boolean('Este cliente no se envia a hacienda')
+    receiver_activity_ids = fields.One2many('codigo.actividad.ordenados', 'partner_id', 'Códigos de actividad')
+    raw_activities = fields.Text('Actividades económicas (raw)', help='JSON con las actividades económicas tal cual vienen del MH')
 
     _sql_constraints = [
         ('vat_uniq', 'unique (vat)', "La cédula debe ser única"),
