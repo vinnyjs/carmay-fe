@@ -133,16 +133,16 @@ class InvoiceXMLGenerator:
         xml = "<Nombre>{}</Nombre>\n".format(partner.name[:99].replace('&', '&amp;'))
 
         # Identificación normal
-        if partner.identification_id and partner.vat and partner.identification_id.code != '05':
+        if partner.identification_id and partner.ref and partner.identification_id.code != '05':
             xml += """
             <Identificacion>
                 <Tipo>{}</Tipo>
                 <Numero>{}</Numero>
-            </Identificacion>""".format(partner.identification_id.code, partner.vat)
+            </Identificacion>""".format(partner.identification_id.code, partner.ref)
 
         # Identificación extranjero
-        if partner.identification_id and partner.vat and partner.identification_id.code == '05':
-            xml += "<IdentificacionExtranjero>{}</IdentificacionExtranjero>\n".format(partner.vat)
+        if partner.identification_id and partner.ref and partner.identification_id.code == '05':
+            xml += "<IdentificacionExtranjero>{}</IdentificacionExtranjero>\n".format(partner.ref)
 
         # Nombre comercial
         if partner.commercial_name:
