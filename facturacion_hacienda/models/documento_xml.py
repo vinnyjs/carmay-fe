@@ -14,7 +14,8 @@ DEFAULT_FACTURA_CR_DATETIME_FORMAT = '%Y-%m-%dT%H:%m:%s-06:00'
 def format_datetime(env, dt, tz='UTC', dt_format=DEFAULT_FACTURA_CR_DATETIME_FORMAT):
     # Format the date in the CR standard.
     dt = dt or datetime.now()
-
+    if dt and isinstance(dt, str):
+        dt = parse(dt)
     now = format_dt(
         dt, format='Y-MM-ddTH:mm:s-06:00',
         tzinfo=get_timezone('America/Costa_Rica'), locale='es_CR'
