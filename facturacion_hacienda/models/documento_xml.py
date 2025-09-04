@@ -6,21 +6,21 @@ from datetime import timedelta, datetime
 from odoo import _, models, fields
 import re, logging
 import phonenumbers
-import babel.dates
+from babel.dates import get_timezone, format_datetime as format_dt
 
 _logger = logging.getLogger(__name__)
 DEFAULT_FACTURA_CR_DATETIME_FORMAT = '%Y-%m-%dT%H:%m:%s-06:00'
 
 def format_datetime(env, dt, tz='UTC', dt_format=DEFAULT_FACTURA_CR_DATETIME_FORMAT):
     # Format the date in the CR standard.
-
-    # babel.dates.format_datetime(
-    #     value, format=gb['display_format'],
-    #     tzinfo=tzinfo, locale=locale
-    # )
-
     dt = dt or datetime.now()
-    return dt.strftime(DEFAULT_FACTURA_CR_DATETIME_FORMAT)
+
+    now = format_dt(
+        dt, format='Y-MM-ddTH:mm:s-06:00',
+        tzinfo=get_timezone('America/Costa_Rica'), locale='es_CR'
+    )
+
+    return now
 
 class InvoiceXMLGenerator:
     """
