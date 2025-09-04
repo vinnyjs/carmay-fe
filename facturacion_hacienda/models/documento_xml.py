@@ -748,7 +748,7 @@ class Invoice(models.Model):
                         if self.exoneration:
                             exoneration_obj = self.exoneration['exoneration']  # customer.exoneration
                             if exoneration_obj.cliente_exento or exoneration_obj.no_sujeto:
-                                exoneration = False
+                                exoneration = {}
                                 if exoneration_obj.cliente_exento:
                                     exento = True
                                 elif exoneration_obj.no_sujeto:
