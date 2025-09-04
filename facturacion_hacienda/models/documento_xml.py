@@ -825,7 +825,7 @@ class Invoice(models.Model):
                         monto_no_sujeto = monto_total
                 else:
                     tax_amount_details = get_total_tax_amount(line.invoice_line_tax_ids, True)
-                    base_imponible = redondear_currency(tax_amount_details['total_included'])
+                    base_imponible = redondear_currency(tax_amount_details['total_excluded'])
                     subtotal = redondear_currency(tax_amount_details['total_excluded'])
                     taxes = line.invoice_line_tax_ids
                     if taxes:
